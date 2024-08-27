@@ -1,15 +1,16 @@
-import { Text, View } from "react-native";
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavBar from "@/components/NavBar";
+import DailyTask from "@/components/DailyTask";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <div>
+      <header>
+        <NavBar />
+      </header>
+      <main>
+        <DailyTask/>
+      </main>
+    </div>
   );
 }
