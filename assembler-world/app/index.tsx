@@ -1,16 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "@/components/NavBar";
-import DailyTask from "@/components/DailyTask";
+import AppNavigator from "./AppNavigator";
 
-export default function Index() {
+const Index: React.FC = () => {
   return (
-    <div>
-      <header>
-        <NavBar />
-      </header>
-      <main>
-        <DailyTask/>
-      </main>
-    </div>
+    <AppNavigator/>
   );
 }
+
+export default Index;
