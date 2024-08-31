@@ -1,71 +1,55 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import { UserPreferencesContext } from '@/context/UserPreferencesContext';
-import { useContext } from 'react';
+import Slider from "@/app/Slider";
+import { router } from "expo-router";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const NavBar: React.FC = () => {
-  const expand = 'md';
-  const { theme, setTheme } = useContext(UserPreferencesContext);
-  
+  const [isSliderVisible, setSliderVisible] = useState(false);
   return (
-    <Navbar expand={expand} className="bg-body-tertiary mb-3">
-      <Container fluid>
-        <Navbar.Brand href="#">Assembler World</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-        <Navbar.Offcanvas
-          id={`offcanvasNavbar-expand-${expand}`}
-          aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-          placement="end"
+    <>
+      <View style={stylesNavbar.container}>
+        <Pressable
+          style={stylesNavbar.link}
+          onPress={() => router.replace("/DailyTask")}
         >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-              Offcanvas
-            </Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="">
-                <Button
-                  title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-                  onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                >
-                  Switch Theme
-                </Button>
-              </Nav.Link>
-              <NavDropdown
-                title="Dropdown"
-                id={`offcanvasNavbarDropdown-expand-${expand}`}
-              >
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Container>
-    </Navbar>
+          <Text style={stylesNavbar.h1}>Assembler World</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => setSliderVisible(true)}
+          style={stylesNavbar.link}
+        >
+          <Text style={stylesNavbar.slider}>Open Slider</Text>
+        </Pressable>
+      </View>
+      <Slider
+        isVisible={isSliderVisible}
+        onClose={() => setSliderVisible(false)}
+      />
+    </>
   );
-}
+};
+
+const stylesNavbar = StyleSheet.create({
+  container: {
+    backgroundColor: "#164AAD",
+    height: 65,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+  h1: {
+    textAlign: "center",
+    color: "#E47A17",
+    fontSize: 24,
+  },
+  link: {
+    flex: 1,
+  },
+  slider: {
+    color: "white",
+    fontSize: 14,
+  },
+});
 
 export default NavBar;

@@ -6,7 +6,7 @@ interface UserPreferencesContextType {
 }
 
 export const UserPreferencesContext = createContext<UserPreferencesContextType>({
-  theme: 'light',
+  theme: 'dark',
   setTheme: () => {},
 });
 

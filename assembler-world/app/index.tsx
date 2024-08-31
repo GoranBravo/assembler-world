@@ -1,10 +1,9 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import AppNavigator from "./AppNavigator";
+import React from "react";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
+import DailyTask from "./DailyTask";
 
 const Index: React.FC = () => {
-  return (
-    <AppNavigator/>
-  );
-}
+  return <DailyTask />;
+};
 
 export default Index;
