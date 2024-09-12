@@ -1,16 +1,14 @@
 import React, { ReactNode } from "react";
 import NavBar from "@/components/NavBar";
 import { UserPreferencesProvider } from "@/context/UserPreferencesContext";
-import { SafeAreaView, View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <UserPreferencesProvider>
-        <NavBar />
-        <View style={styles.container}>{children}</View>
-      </UserPreferencesProvider>
-    </SafeAreaView>
+    <UserPreferencesProvider>
+      <NavBar />
+      <View style={styles.container}>{children}</View>
+    </UserPreferencesProvider>
   );
 };
 
