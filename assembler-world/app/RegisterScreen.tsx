@@ -5,39 +5,28 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  Alert,
   Dimensions,
   SafeAreaView,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { loginCheck } from "@/apis/login";
-import { save } from "@/utils/storage";
+import { save } from "@/utils/storage"; /////////////////////
 import { Link, router } from "expo-router";
+import { registerCheck } from "@/apis/register";
 
 const { width } = Dimensions.get("window");
 
-const LoginScreen: React.FC = () => {
+const RegisterScreen: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     // Comprobar éxito en el login
-    const Data = await loginCheck(email, password);
+    const Data = await registerCheck(email, nombre, password);
     if (Data.success) {
-      // Verificar si Data.token está definido antes de guardarlo
-      if (Data.token) {
-        const result = await save("token", Data.token);
-        if (result) {
-          // Redirigir a la siguiente pantalla si se guarda correctamente
-          router.replace("/");
-        } else {
-          setErrorMessage("Error al guardar el token.");
-        }
-      } else {
-        setErrorMessage("Token no disponible.");
-      }
+      router.replace("/");
     } else {
       setErrorMessage("Error: " + Data.message);
     }
@@ -90,13 +79,19 @@ const LoginScreen: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text style={styles.header}>Iniciar Sesión</Text>
+        <Text style={styles.header}>Registrarse</Text>
         <TextInput
           style={styles.input}
           placeholder="Correo Electrónico"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
+        />
+        <TextInput
+        style={styles.input}
+        placeholder="Nombre"
+        value={nombre}
+        onChangeText={setNombre}
         />
         {errorMessage ? (
           <Text style={{ fontSize: 20, color: "red", textAlign: "left" }}>
@@ -110,15 +105,15 @@ const LoginScreen: React.FC = () => {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        <Pressable style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Registrarse</Text>
         </Pressable>
-        <Pressable onPress={() => router.replace("/RegisterScreen")}>
-          <Text style={styles.link}>¿No tienes una cuenta? Regístrate</Text>
+        <Pressable onPress={() => router.replace("/LoginScreen")}>
+          <Text style={styles.link}>¿Ya tienes una cuenta? Inicia Sesion</Text>
         </Pressable>
       </View>
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
