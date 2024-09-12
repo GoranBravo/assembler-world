@@ -1,4 +1,4 @@
-import Slider from "@/app/Slider";
+import Slider from "@/components/Slider";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -10,7 +10,7 @@ const NavBar: React.FC = () => {
       <View style={stylesNavbar.container}>
         <Pressable
           style={stylesNavbar.link}
-          onPress={() => router.replace("/DailyTask")}
+          onPress={() => router.replace("/")}
         >
           <Text style={stylesNavbar.h1}>Assembler World</Text>
         </Pressable>

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
-  Button,
 } from "react-native";
 import Animated, {
   useAnimatedStyle,
