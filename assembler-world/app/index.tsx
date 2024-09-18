@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import YoutubeIframe from "react-native-youtube-iframe";
 
@@ -25,14 +25,16 @@ const Index: React.FC = () => {
 
   return (
     <View style={stylesDaily.container}>
-      <View style={stylesDaily.video}>
-        <YoutubeIframe
-          height={stylesDaily.video.height}
-          width={stylesDaily.video.width}
-          videoId="9wvzEOq1imo"
-        />
-      </View>
-      <Text style={stylesDaily.h1}>Problema del Día</Text>
+      <ScrollView>
+        <View style={stylesDaily.video}>
+          <YoutubeIframe
+            height={stylesDaily.video.height}
+            width={stylesDaily.video.width}
+            videoId="9wvzEOq1imo"
+          />
+        </View>
+        <Text style={stylesDaily.h1}>Problema del Día</Text>
+      </ScrollView>
     </View>
   );
 };

@@ -2,7 +2,7 @@ import Slider from "@/components/Slider";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const NavBar: React.FC = () => {
@@ -22,6 +22,7 @@ const NavBar: React.FC = () => {
             style={stylesNavbar.link}
           >
             <Text style={stylesNavbar.slider}>Open Slider</Text>
+            <Image src=""></Image>
           </Pressable>
           
       </View>
@@ -47,7 +48,7 @@ const stylesNavbar = StyleSheet.create({
   h1: {
     textAlign: "center",
     color: "#E47A17",
-    fontSize: 24,
+    fontSize: 22,
     textShadowColor: "#000",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
@@ -56,6 +57,7 @@ const stylesNavbar = StyleSheet.create({
     flex: 1,
   },
   slider: {
+    textAlign: "right",
     color: "white",
     fontSize: 14,
   },
