@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -40,30 +41,33 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   }, [isVisible]);
 
   return isVisible ? (
-    <View style={styles.overlay}>
-      <Animated.View style={[styles.container, animatedStyle]}>
-        <Text style={styles.title}>Slider Content</Text>
-        <Pressable onPress={onClose} style={styles.closeButton}>
-          <Text style={styles.closeText}>Close</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => setTheme(theme === "light" ? "dark" : "light")}
-          style={styles.themeButton}
-        >
-          <Text style={styles.themeButtonText}>
-            {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => router.replace("/LoginScreen")}
-          style={styles.loginButton}
-        >
-          <Text style={styles.loginButtonText}>Go to Login</Text>
-        </Pressable>
-      </Animated.View>
-    </View>
+      <View style={styles.overlay}>
+        <Animated.View style={[styles.container, animatedStyle]}>
+          <SafeAreaView>
+          <Text style={styles.title}>Slider Content</Text>
+          <Pressable onPress={onClose} style={styles.closeButton}>
+            <Text style={styles.closeText}>Close</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+            style={styles.themeButton}
+          >
+            <Text style={styles.themeButtonText}>
+              {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => router.replace("/LoginScreen")}
+            style={styles.loginButton}
+          >
+            <Text style={styles.loginButtonText}>Go to Login</Text>
+          </Pressable>
+          </SafeAreaView>
+        </Animated.View>
+      </View>
   ) : null;
 };
+
 
 const styles = StyleSheet.create({
   overlay: {
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: "70%",
-    backgroundColor: "white",
+    backgroundColor: "#164AAD",
     padding: 20,
     shadowColor: "#000",
     shadowOpacity: 0.5,

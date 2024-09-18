@@ -6,7 +6,6 @@ import {
   Pressable,
   StyleSheet,
   Dimensions,
-  SafeAreaView,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
@@ -76,42 +75,40 @@ const RegisterScreen: React.FC = () => {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.header}>Registrarse</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <TextInput
+    <View style={styles.container}>
+      <Text style={styles.header}>Registrarse</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Correo Electrónico"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+      <TextInput
         style={styles.input}
         placeholder="Nombre"
         value={nombre}
         onChangeText={setNombre}
-        />
-        {errorMessage ? (
-          <Text style={{ fontSize: 20, color: "red", textAlign: "left" }}>
-            {errorMessage}
-          </Text>
-        ) : null}
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Pressable style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </Pressable>
-        <Pressable onPress={() => router.replace("/LoginScreen")}>
-          <Text style={styles.link}>¿Ya tienes una cuenta? Inicia Sesion</Text>
-        </Pressable>
-      </View>
-    </SafeAreaView>
+      />
+      {errorMessage ? (
+        <Text style={{ fontSize: 20, color: "red", textAlign: "left" }}>
+          {errorMessage}
+        </Text>
+      ) : null}
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Pressable style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrarse</Text>
+      </Pressable>
+      <Pressable onPress={() => router.replace("/LoginScreen")}>
+        <Text style={styles.link}>¿Ya tienes una cuenta? Inicia Sesion</Text>
+      </Pressable>
+    </View>
   );
 };
 

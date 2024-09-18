@@ -1,7 +1,9 @@
 import React, { ReactNode } from "react";
 import NavBar from "@/components/NavBar";
 import { UserPreferencesProvider } from "@/context/UserPreferencesContext";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -14,7 +16,6 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? 30 : 0,
     flex: 1,
   },
 });
