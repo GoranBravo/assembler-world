@@ -42,6 +42,9 @@ const stylesNavbar = StyleSheet.create({
     textAlign: "center",
     color: "#E47A17",
     fontSize: 24,
+    textShadowColor: '#000',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
   link: {
     flex: 1,

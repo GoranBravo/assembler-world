@@ -11,7 +11,7 @@ export const UserPreferencesContext = createContext<UserPreferencesContextType>(
 });
 
 export const UserPreferencesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   return (
     <UserPreferencesContext.Provider value={{ theme, setTheme }}>

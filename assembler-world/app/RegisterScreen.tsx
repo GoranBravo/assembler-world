@@ -9,8 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { save } from "@/utils/storage"; /////////////////////
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";
 
 const { width } = Dimensions.get("window");

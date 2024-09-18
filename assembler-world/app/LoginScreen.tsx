@@ -5,14 +5,13 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  Alert,
   Dimensions,
   SafeAreaView,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
