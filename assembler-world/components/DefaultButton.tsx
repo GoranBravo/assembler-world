@@ -4,9 +4,9 @@ import { Pressable, StyleSheet, Text } from "react-native";
 export const DefaultButton: React.FC<{
   text: string;
   press: () => void;
-  color: string;
-  vertical: boolean;
-}> = ({ text, press, color, vertical }) => {
+  color?: string;
+  vertical?: boolean;
+}> = ({ text, press, color = "#007BFF", vertical = false }) => {
   let padH = 0;
   let padV = 0;
   if (vertical) {

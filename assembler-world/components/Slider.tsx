@@ -1,6 +1,6 @@
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -37,9 +37,11 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
 
   return isVisible ? (
     <View style={styles.overlay}>
-      <Animated.View style={[styles.container, animatedStyle]}>
-        <SafeAreaView>
-          <Text style={styles.title}>Contenido</Text>
+      <Animated.View style={[styles.container, animatedStyle]}>  
+        <Pressable style={styles.header} onPress={() => router.replace("/LoginScreen")}>
+          <Text style={styles.title}>Iniciar Sesion</Text>
+        </Pressable>
+        <SafeAreaView style={styles.buttons}>
           <DefaultButton
             text={"Cerrar"}
             press={onClose}
@@ -53,9 +55,8 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
             vertical={true}
           />
           <DefaultButton
-            text={"Login"}
-            press={() => router.replace("/LoginScreen")}
-            color="#007BFF"
+            text={"SingUp"}
+            press={() => router.replace("/RegisterScreen")}
             vertical={true}
           />
         </SafeAreaView>
@@ -78,18 +79,25 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "70%",
     backgroundColor: "#164AAD",
-    padding: 20,
     shadowColor: "#000",
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     zIndex: 1000,
   },
+  buttons: {
+    padding: 20,
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
   },
+  header: {
+    padding: 20,
+    backgroundColor: "#E47A17",
+    height: 65,
+  }
 });
 
 export default Slider;

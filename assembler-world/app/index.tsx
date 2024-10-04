@@ -55,6 +55,7 @@ const Index: React.FC = () => {
           />
         </View>
         <Text style={stylesDaily.h1}>Problema del Día</Text>
+        <Text></Text>
       </ScrollView>
     </View>
   );

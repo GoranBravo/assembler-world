@@ -38,13 +38,10 @@ const NavBar: React.FC = () => {
                 text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
                 press={() => setTheme(theme === "light" ? "dark" : "light")}
                 color="#dc3545"
-                vertical={false}
               />
               <DefaultButton
-                text={"Login"}
-                press={() => router.replace("/LoginScreen")}
-                color="#007BFF"
-                vertical={false}
+                text={"SingUp"}
+                press={() => router.replace("/RegisterScreen")}
               />
             </View>
           )}
