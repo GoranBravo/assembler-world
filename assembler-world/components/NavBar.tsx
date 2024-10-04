@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
             onPress={() => setSliderVisible(true)}
             style={stylesNavbar.link}
           >
-            <Text style={stylesNavbar.slider}>Open Slider</Text>
+            <Text style={stylesNavbar.slider}>Slider</Text>
             <Image src=""></Image>
           </Pressable>
           
