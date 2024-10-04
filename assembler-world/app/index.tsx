@@ -1,23 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import YoutubeIframe from "react-native-youtube-iframe";
-
-const { width } = Dimensions.get("window");
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const Index: React.FC = () => {
-  const videoWidth = width > 1500 ? width - 700 : width > 900 ? width - 300 : width - 40;  
-  const videoMargin = width > 1500 ? 350 : width > 900 ? 150 : 20;
-  const videoHeight = videoWidth * (9 / 16);
-
+  const {videoHeight, videoWidth, videoMargin} = useScreenSize();
+  
   const stylesDaily = StyleSheet.create({
     video: {
       width: videoWidth,
       height: videoHeight,
-      marginStart: videoMargin,
-      marginEnd: videoMargin,
-      marginTop: 20,
-      marginBottom: 20,
+      marginHorizontal: videoMargin,
+      marginVertical: 20,
     },
     container: {
       flex: 1,

@@ -9,23 +9,20 @@ const NavBar: React.FC = () => {
   const [isSliderVisible, setSliderVisible] = useState(false);
   return (
     <>
-      <SafeAreaView style={{backgroundColor: useThemeColor({}, "background")}}>
-      <View style={stylesNavbar.container}>
-          <Pressable
-            style={stylesNavbar.link}
-            onPress={() => router.replace("/")}
-          >
-            <Text style={stylesNavbar.h1}>Assembler World</Text>
+      <SafeAreaView
+        style={{ backgroundColor: useThemeColor({}, "background") }}
+      >
+        <View style={styles.container}>
+          <Pressable style={styles.link} onPress={() => router.replace("/")}>
+            <Text style={styles.h1}>Assembler World</Text>
           </Pressable>
-          <Pressable
-            onPress={() => setSliderVisible(true)}
-            style={stylesNavbar.link}
-          >
-            <Text style={stylesNavbar.slider}>Slider</Text>
-            <Image src=""></Image>
+          <Pressable onPress={() => setSliderVisible(true)} style={styles.linkSlider}>
+            <Image
+              style={styles.sliderImg}
+              source={require("../assets/images/threeLines.png")}
+            ></Image>
           </Pressable>
-          
-      </View>
+        </View>
       </SafeAreaView>
 
       <Slider
@@ -36,14 +33,14 @@ const NavBar: React.FC = () => {
   );
 };
 
-const stylesNavbar = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: "#164AAD",
     height: 65,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   h1: {
     textAlign: "center",
@@ -56,10 +53,13 @@ const stylesNavbar = StyleSheet.create({
   link: {
     flex: 1,
   },
-  slider: {
-    textAlign: "right",
-    color: "white",
-    fontSize: 14,
+  linkSlider: {
+    flex: 1,
+    alignContent: "flex-end",
+  },
+  sliderImg: {
+    width: 30,
+    height: 30,
   },
 });
 

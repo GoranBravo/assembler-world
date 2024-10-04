@@ -11,7 +11,7 @@ export const DefaultButton: React.FC<{
       onPress={press}
       style={[styles.button, { backgroundColor: color }]}
     >
-      <Text>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </Pressable>
   );
 };
@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
+  },
+  text: {
     color: "white",
     fontSize: 16,
   },
