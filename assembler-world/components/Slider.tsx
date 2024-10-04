@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Pressable,
   Dimensions,
 } from "react-native";
 import Animated, {
@@ -14,6 +13,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { DefaultButton } from "./DefaultButton";
 
 const { width } = Dimensions.get("window");
 
@@ -41,33 +41,28 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   }, [isVisible]);
 
   return isVisible ? (
-      <View style={styles.overlay}>
-        <Animated.View style={[styles.container, animatedStyle]}>
-          <SafeAreaView>
-          <Text style={styles.title}>Slider Content</Text>
-          <Pressable onPress={onClose} style={styles.closeButton}>
-            <Text style={styles.closeText}>Close</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setTheme(theme === "light" ? "dark" : "light")}
-            style={styles.themeButton}
-          >
-            <Text style={styles.themeButtonText}>
-              {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => router.replace("/LoginScreen")}
-            style={styles.loginButton}
-          >
-            <Text style={styles.loginButtonText}>Go to Login</Text>
-          </Pressable>
-          </SafeAreaView>
-        </Animated.View>
-      </View>
+    <View style={styles.overlay}>
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <SafeAreaView>
+          <Text style={styles.title}>Contenido</Text>
+          <DefaultButton text={"Cerrar"} press={onClose} color="#28a745"/>
+          <DefaultButton
+            text={
+              theme === "light" ? "Modo Oscuro" : "Modo Claro"
+            }
+            press={() => setTheme(theme === "light" ? "dark" : "light")}
+            color="#dc3545"
+          />
+          <DefaultButton
+            text={"Login"}
+            press={() => router.replace("/LoginScreen")}
+            color="#007BFF"
+          />
+        </SafeAreaView>
+      </Animated.View>
+    </View>
   ) : null;
 };
-
 
 const styles = StyleSheet.create({
   overlay: {
@@ -94,39 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  closeText: {
-    color: "white",
-    fontSize: 16,
-  },
-  themeButton: {
-    marginTop: 15,
-    padding: 10,
-    backgroundColor: "#28a745",
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  themeButtonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  loginButton: {
-    marginTop: 15,
-    padding: 10,
-    backgroundColor: "#dc3545",
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  loginButtonText: {
-    color: "white",
-    fontSize: 16,
   },
 });
 
