@@ -6,16 +6,13 @@ export const useScreenSize = () => {
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
   );
-  const [videoWidth, setVideoWidth] = useState(500);
-  const [videoMargin, setVideoMargin] = useState(20);
-  const [videoHeight, setVideoHeight] = useState(500 * (9 / 16));
 
   useEffect(() => {
     const updateScreenSize = () => {
       const { width } = Dimensions.get("window");
       setScreenWidth(width);
 
-      if (width > 1500) {
+      if (width > 1300) {
         setScreenSize("large");
       } else if (width > 900) {
         setScreenSize("medium");
@@ -38,22 +35,5 @@ export const useScreenSize = () => {
     };
   }, []);
 
-  // Efecto separado para actualizar videoWidth y videoMargin
-  useEffect(() => {
-    if (screenSize === "large") {
-      setVideoWidth(screenWidth - 700);
-      setVideoMargin(350);
-    } else if (screenSize === "medium") {
-      setVideoWidth(screenWidth - 300);
-      setVideoMargin(150);
-    } else {
-      setVideoWidth(screenWidth - 40);
-      setVideoMargin(20);
-    }
-
-    // Actualizar videoHeight basado en el nuevo videoWidth
-    setVideoHeight(videoWidth * (9 / 16));
-  }, [screenSize, screenWidth]);
-
-  return { screenSize, screenWidth, videoWidth, videoMargin, videoHeight };
+  return { screenSize, screenWidth };
 };
