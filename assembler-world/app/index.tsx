@@ -6,11 +6,18 @@ import YoutubeIframe from "react-native-youtube-iframe";
 const { width } = Dimensions.get("window");
 
 const Index: React.FC = () => {
+  const videoWidth = width > 1500 ? width - 700 : width > 900 ? width - 300 : width - 40;  
+  const videoMargin = width > 1500 ? 350 : width > 900 ? 150 : 20;
+  const videoHeight = videoWidth * (9 / 16);
+
   const stylesDaily = StyleSheet.create({
     video: {
-      width: width - 40,
-      height: (width - 40) * (9 / 16),
-      margin: 20,
+      width: videoWidth,
+      height: videoHeight,
+      marginStart: videoMargin,
+      marginEnd: videoMargin,
+      marginTop: 20,
+      marginBottom: 20,
     },
     container: {
       flex: 1,
@@ -28,8 +35,8 @@ const Index: React.FC = () => {
       <ScrollView>
         <View style={stylesDaily.video}>
           <YoutubeIframe
-            height={stylesDaily.video.height}
-            width={stylesDaily.video.width}
+            height={videoHeight}
+            width={videoWidth}
             videoId="9wvzEOq1imo"
           />
         </View>
