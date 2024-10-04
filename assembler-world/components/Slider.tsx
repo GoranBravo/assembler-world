@@ -1,11 +1,6 @@
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 import React, { useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -14,14 +9,14 @@ import Animated, {
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "./DefaultButton";
-
-const { width } = Dimensions.get("window");
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   isVisible,
   onClose,
 }) => {
-  const translateX = useSharedValue(width * 0.7);
+  const { screenWidth } = useScreenSize();
+  const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -36,7 +31,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
     if (isVisible) {
       translateX.value = 0;
     } else {
-      translateX.value = width * 0.7;
+      translateX.value = screenWidth * 0.7;
     }
   }, [isVisible]);
 
@@ -45,18 +40,23 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
       <Animated.View style={[styles.container, animatedStyle]}>
         <SafeAreaView>
           <Text style={styles.title}>Contenido</Text>
-          <DefaultButton text={"Cerrar"} press={onClose} color="#28a745"/>
           <DefaultButton
-            text={
-              theme === "light" ? "Modo Oscuro" : "Modo Claro"
-            }
+            text={"Cerrar"}
+            press={onClose}
+            color="#28a745"
+            vertical={true}
+          />
+          <DefaultButton
+            text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
             press={() => setTheme(theme === "light" ? "dark" : "light")}
             color="#dc3545"
+            vertical={true}
           />
           <DefaultButton
             text={"Login"}
             press={() => router.replace("/LoginScreen")}
             color="#007BFF"
+            vertical={true}
           />
         </SafeAreaView>
       </Animated.View>

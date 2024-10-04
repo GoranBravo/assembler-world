@@ -5,16 +5,16 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
 import { router } from "expo-router";
-
-const { width } = Dimensions.get("window");
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const LoginScreen: React.FC = () => {
+  const { screenWidth } = useScreenSize();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,7 +50,7 @@ const LoginScreen: React.FC = () => {
       padding: 20,
     },
     input: {
-      width: width - 40,
+      width: screenWidth - 40,
       height: 50,
       borderColor: "#ddd",
       borderWidth: 1,
@@ -60,7 +60,7 @@ const LoginScreen: React.FC = () => {
       backgroundColor: "#fff",
     },
     button: {
-      width: width - 40,
+      width: screenWidth - 40,
       height: 50,
       backgroundColor: "#007BFF",
       borderRadius: 5,

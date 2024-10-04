@@ -1,27 +1,53 @@
 import Slider from "@/components/Slider";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { DefaultButton } from "@/components/DefaultButton";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const NavBar: React.FC = () => {
+  const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
+  const { theme, setTheme } = useContext(UserPreferencesContext);
+
   return (
     <>
       <SafeAreaView
         style={{ backgroundColor: useThemeColor({}, "background") }}
       >
         <View style={styles.container}>
-          <Pressable style={styles.link} onPress={() => router.replace("/")}>
+          <Pressable onPress={() => router.replace("/")}>
             <Text style={styles.h1}>Assembler World</Text>
           </Pressable>
-          <Pressable onPress={() => setSliderVisible(true)} style={styles.linkSlider}>
-            <Image
-              style={styles.sliderImg}
-              source={require("../assets/images/threeLines.png")}
-            ></Image>
-          </Pressable>
+
+          {screenSize === "small" && (
+            <Pressable onPress={() => setSliderVisible(true)}>
+              <Image
+                style={styles.sliderImg}
+                source={require("../assets/images/threeLines.png")}
+              />
+            </Pressable>
+          )}
+
+          {screenSize !== "small" && (
+            <View style={styles.buttonsContainer}>
+              <DefaultButton
+                text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
+                press={() => setTheme(theme === "light" ? "dark" : "light")}
+                color="#dc3545"
+                vertical={false}
+              />
+              <DefaultButton
+                text={"Login"}
+                press={() => router.replace("/LoginScreen")}
+                color="#007BFF"
+                vertical={false}
+              />
+            </View>
+          )}
         </View>
       </SafeAreaView>
 
@@ -39,8 +65,8 @@ const styles = StyleSheet.create({
     height: 65,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 20,
+    justifyContent: "space-between",
   },
   h1: {
     textAlign: "center",
@@ -50,16 +76,14 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
   },
-  link: {
-    flex: 1,
-  },
-  linkSlider: {
-    flex: 1,
-    alignContent: "flex-end",
-  },
   sliderImg: {
     width: 30,
     height: 30,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });
 

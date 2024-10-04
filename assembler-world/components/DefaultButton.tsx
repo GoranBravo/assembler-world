@@ -5,11 +5,22 @@ export const DefaultButton: React.FC<{
   text: string;
   press: () => void;
   color: string;
-}> = ({ text, press, color }) => {
+  vertical: boolean;
+}> = ({ text, press, color, vertical }) => {
+  let padH = 0;
+  let padV = 0;
+  if (vertical) {
+    padV = 5;
+  } else {
+    padH = 10;
+  }
   return (
     <Pressable
       onPress={press}
-      style={[styles.button, { backgroundColor: color }]}
+      style={[
+        styles.button,
+        { backgroundColor: color, marginLeft: padH, marginVertical: padV },
+      ]}
     >
       <Text style={styles.text}>{text}</Text>
     </Pressable>
@@ -18,7 +29,6 @@ export const DefaultButton: React.FC<{
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 15,
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
