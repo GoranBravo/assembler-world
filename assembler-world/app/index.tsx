@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -37,10 +37,29 @@ const Index: React.FC = () => {
       flex: 1,
       backgroundColor: useThemeColor({}, "background"),
     },
+    textContainer: {
+      paddingHorizontal: 400,
+      paddingVertical: 10,
+    },
     h1: {
       textAlign: "center",
       color: useThemeColor({}, "text"),
-      fontSize: 24,
+      fontSize: 34,
+      fontWeight: "bold",
+      marginBottom: 20,
+    },
+    h2: {
+      fontSize: 28,
+      color: useThemeColor({}, "text"),
+      marginBottom: 10,
+      fontWeight: "600",
+      textAlign: "center",
+    },
+    mainText: {
+      fontSize: 16,
+      color: useThemeColor({}, "text"),
+      lineHeight: 24,
+      textAlign: "left",
     },
   });
 
@@ -55,7 +74,19 @@ const Index: React.FC = () => {
           />
         </View>
         <Text style={stylesDaily.h1}>Problema del Día</Text>
-        <Text></Text>
+        <View style={stylesDaily.textContainer}>
+          <Text style={stylesDaily.h2}>TP Assembly</Text>
+          <Text style={stylesDaily.mainText}>
+            {" "}
+            1- Probar número más grande que pueda asignarse directamente, y que
+            todos los anteriores al mismo puedan asignarse directamente. Deducir
+            el por qué. {"\n"} 2- Guardar el número "1234" en R2. {"\n"} 3-
+            Guardar dicho número en memoria. {"\n"} 4- Guardar el doble del
+            número anterior en la siguiente posición de memoria. Utilizando
+            offset.
+          </Text>
+          <Image source={require("../assets/images/registers.png")} style={{width: 1000, height: 500, marginTop: 20}}></Image>
+        </View>
       </ScrollView>
     </View>
   );
