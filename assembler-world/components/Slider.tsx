@@ -42,7 +42,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
           <Pressable style={styles.header} onPress={() => router.replace("/LoginScreen")}>
             <Text style={styles.title}>Iniciar Sesion</Text>
           </Pressable>
-          <View style={styles.buttons}>
+          <View style={styles.buttonsContainer}>
             <DefaultButton
               text={"Cerrar"}
               press={onClose}
@@ -87,9 +87,10 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     zIndex: 1000,
   },
-  buttons: {
-    padding: 20,
+  buttonsContainer: {
+    paddingHorizontal: 20,
     backgroundColor: "#164AAD",
+    paddingTop: 20,
   },
   title: {
     fontSize: 20,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: "#E47A17",
     height: 65,
-    justifyContent: "center"
+    justifyContent: "center",
   }
 });
 

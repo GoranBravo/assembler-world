@@ -10,7 +10,7 @@ export const DefaultButton: React.FC<{
   let padH = 0;
   let padV = 0;
   if (vertical) {
-    padV = 5;
+    padV = 10;
   } else {
     padH = 10;
   }
@@ -19,7 +19,7 @@ export const DefaultButton: React.FC<{
       onPress={press}
       style={[
         styles.button,
-        { backgroundColor: color, marginLeft: padH, marginVertical: padV },
+        { backgroundColor: color, marginLeft: padH, marginBottom: padV },
       ]}
     >
       <Text style={styles.text}>{text}</Text>

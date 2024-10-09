@@ -38,8 +38,8 @@ const Index: React.FC = () => {
       backgroundColor: useThemeColor({}, "background"),
     },
     textContainer: {
-      paddingHorizontal: 400,
-      paddingVertical: 10,
+      marginHorizontal: videoMargin,
+      marginBottom: 10,
     },
     h1: {
       textAlign: "center",
@@ -60,6 +60,7 @@ const Index: React.FC = () => {
       color: useThemeColor({}, "text"),
       lineHeight: 24,
       textAlign: "left",
+      marginBottom: 10,
     },
   });
 
@@ -73,8 +74,8 @@ const Index: React.FC = () => {
             videoId="9wvzEOq1imo"
           />
         </View>
-        <Text style={stylesDaily.h1}>Problema del Día</Text>
         <View style={stylesDaily.textContainer}>
+          <Text style={stylesDaily.h1}>Problema del Día</Text>
           <Text style={stylesDaily.h2}>TP Assembly</Text>
           <Text style={stylesDaily.mainText}>
             {" "}
@@ -85,7 +86,7 @@ const Index: React.FC = () => {
             número anterior en la siguiente posición de memoria. Utilizando
             offset.
           </Text>
-          <Image source={require("../assets/images/registers.png")} style={{width: 1000, height: 500, marginTop: 20}}></Image>
+          <Image source={require("../assets/images/registers.png")} style={{width: videoWidth, height: videoHeight}}></Image>
         </View>
       </ScrollView>
     </View>
