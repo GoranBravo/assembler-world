@@ -37,28 +37,30 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
 
   return isVisible ? (
     <View style={styles.overlay}>
-      <Animated.View style={[styles.container, animatedStyle]}>  
-        <Pressable style={styles.header} onPress={() => router.replace("/LoginScreen")}>
-          <Text style={styles.title}>Iniciar Sesion</Text>
-        </Pressable>
-        <SafeAreaView style={styles.buttons}>
-          <DefaultButton
-            text={"Cerrar"}
-            press={onClose}
-            color="#28a745"
-            vertical={true}
-          />
-          <DefaultButton
-            text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
-            press={() => setTheme(theme === "light" ? "dark" : "light")}
-            color="#dc3545"
-            vertical={true}
-          />
-          <DefaultButton
-            text={"SingUp"}
-            press={() => router.replace("/RegisterScreen")}
-            vertical={true}
-          />
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <SafeAreaView style={{backgroundColor: "#E47A17"}}>
+          <Pressable style={styles.header} onPress={() => router.replace("/LoginScreen")}>
+            <Text style={styles.title}>Iniciar Sesion</Text>
+          </Pressable>
+          <View style={styles.buttons}>
+            <DefaultButton
+              text={"Cerrar"}
+              press={onClose}
+              color="#28a745"
+              vertical={true}
+            />
+            <DefaultButton
+              text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
+              press={() => setTheme(theme === "light" ? "dark" : "light")}
+              color="#dc3545"
+              vertical={true}
+            />
+            <DefaultButton
+              text={"SingUp"}
+              press={() => router.replace("/RegisterScreen")}
+              vertical={true}
+            />
+          </View>
         </SafeAreaView>
       </Animated.View>
     </View>
@@ -87,16 +89,17 @@ const styles = StyleSheet.create({
   },
   buttons: {
     padding: 20,
+    backgroundColor: "#164AAD",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 20,
+    textAlign: "center",
   },
   header: {
-    padding: 20,
     backgroundColor: "#E47A17",
     height: 65,
+    justifyContent: "center"
   }
 });
 
