@@ -1,7 +1,6 @@
 import { signup } from "@/constants/UrlApis";
 
 interface RegisterResponse {
-  // Define aquí la estructura de la respuesta que esperas recibir del servidor
   message: string;
   success: boolean;
   token?: string;
@@ -9,7 +8,6 @@ interface RegisterResponse {
 }
 
 export const registerCheck = async (email: string, nombre: string, password: string): Promise<RegisterResponse> => {
-  //petición a la url
   const res = await fetch(signup, {
     method: "POST",
     headers: {
@@ -18,7 +16,6 @@ export const registerCheck = async (email: string, nombre: string, password: str
     body: JSON.stringify({ email, nombre, password }),
   });
 
-  // Devolver la respuesta del servidor, tipada como RegisterResponse
   const data: RegisterResponse = await res.json();
   return data;
 };

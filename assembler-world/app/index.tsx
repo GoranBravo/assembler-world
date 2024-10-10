@@ -1,45 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import YoutubeIframe from "react-native-youtube-iframe";
-import { useScreenSize } from "@/hooks/useScreenSize";
+import { usePageWidth } from "@/hooks/usePageWidth";
 
 const Index: React.FC = () => {
-  const { screenSize, screenWidth } = useScreenSize();
-
-  const [videoWidth, setVideoWidth] = useState(500);
-  const [videoMargin, setVideoMargin] = useState(20);
-  const [videoHeight, setVideoHeight] = useState(500 * (9 / 16));
-
-  useEffect(() => {
-    if (screenSize === "large") {
-      setVideoWidth(screenWidth - 700);
-      setVideoMargin(350);
-    } else if (screenSize === "medium") {
-      setVideoWidth(screenWidth - 300);
-      setVideoMargin(150);
-    } else {
-      setVideoWidth(screenWidth - 40);
-      setVideoMargin(20);
-    }
-
-    setVideoHeight(videoWidth * (9 / 16));
-  }, [screenSize, screenWidth, videoWidth]);
+  const { videoWidth, videoHeight, pageWidth } = usePageWidth();
 
   const stylesDaily = StyleSheet.create({
     video: {
       width: videoWidth,
       height: videoHeight,
-      marginHorizontal: videoMargin,
       marginVertical: 20,
     },
     container: {
-      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
       backgroundColor: useThemeColor({}, "background"),
     },
     textContainer: {
-      marginHorizontal: videoMargin,
-      marginBottom: 10,
+      width: pageWidth,
     },
     h1: {
       textAlign: "center",
@@ -65,8 +45,9 @@ const Index: React.FC = () => {
   });
 
   return (
+    
+    <ScrollView contentContainerStyle={stylesDaily.container}>
     <View style={stylesDaily.container}>
-      <ScrollView>
         <View style={stylesDaily.video}>
           <YoutubeIframe
             height={videoHeight}
@@ -88,8 +69,9 @@ const Index: React.FC = () => {
           </Text>
           <Image source={require("../assets/images/registers.png")} style={{width: videoWidth, height: videoHeight}}></Image>
         </View>
-      </ScrollView>
     </View>
+    
+    </ScrollView>
   );
 };
 

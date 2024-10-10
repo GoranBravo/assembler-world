@@ -5,15 +5,14 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";
-
-const { width } = Dimensions.get("window");
+import { usePageWidth } from "@/hooks/usePageWidth";
 
 const RegisterScreen: React.FC = () => {
+  const { pageWidth } = usePageWidth();
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +20,6 @@ const RegisterScreen: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleRegister = async () => {
-    // Comprobar éxito en el login
     const Data = await registerCheck(email, nombre, password);
     if (Data.success) {
       router.replace("/");
@@ -39,7 +37,7 @@ const RegisterScreen: React.FC = () => {
       padding: 20,
     },
     input: {
-      width: width - 40,
+      width: pageWidth,
       height: 50,
       borderColor: "#ddd",
       borderWidth: 1,
@@ -49,7 +47,7 @@ const RegisterScreen: React.FC = () => {
       backgroundColor: "#fff",
     },
     button: {
-      width: width - 40,
+      width: pageWidth,
       height: 50,
       backgroundColor: "#007BFF",
       borderRadius: 5,

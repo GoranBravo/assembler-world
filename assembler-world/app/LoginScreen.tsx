@@ -10,31 +10,28 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
 import { router } from "expo-router";
-import { useScreenSize } from "@/hooks/useScreenSize";
+import { usePageWidth } from "@/hooks/usePageWidth";
 
 const LoginScreen: React.FC = () => {
-  const { screenWidth } = useScreenSize();
-
+  const { pageWidth } = usePageWidth();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
-    // Comprobar éxito en el login
     const Data = await loginCheck(email, password);
     if (Data.success) {
-      // Verificar si Data.token está definido antes de guardarlo
       if (Data.token) {
         const result = await save("token", Data.token);
         if (result) {
-          // Redirigir a la siguiente pantalla si se guarda correctamente
           router.replace("/");
         } else {
-          setErrorMessage("Error al guardar el token.");
+          setErrorMessage("Token Save Error.");
         }
       } else {
-        setErrorMessage("Token no disponible.");
+        setErrorMessage("Token Unaviable");
       }
     } else {
       setErrorMessage("Error: " + Data.message);
@@ -47,10 +44,9 @@ const LoginScreen: React.FC = () => {
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: useThemeColor({}, "background"),
-      padding: 20,
     },
     input: {
-      width: screenWidth - 40,
+      width: pageWidth,
       height: 50,
       borderColor: "#ddd",
       borderWidth: 1,
@@ -60,7 +56,7 @@ const LoginScreen: React.FC = () => {
       backgroundColor: "#fff",
     },
     button: {
-      width: screenWidth - 40,
+      width: pageWidth,
       height: 50,
       backgroundColor: "#007BFF",
       borderRadius: 5,

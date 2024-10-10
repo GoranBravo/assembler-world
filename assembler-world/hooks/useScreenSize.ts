@@ -21,7 +21,6 @@ export const useScreenSize = () => {
       }
     };
 
-    // Inicializar el tamaño de pantalla
     updateScreenSize();
 
     const subscription = Dimensions.addEventListener("change", ({ window }) => {
