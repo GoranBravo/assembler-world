@@ -1,17 +1,21 @@
 import Slider from "@/components/Slider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "expo-router";
-import { useContext, useState } from "react";
+import { Href, router } from "expo-router";
+import { useContext, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "@/components/DefaultButton";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
+import { FavButton } from "./FavButton";
+import { useMarkers } from "@/hooks/useMarkers";
 
 const NavBar: React.FC = () => {
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
+
+  const { userMarkers } = useMarkers();
 
   return (
     <>
@@ -40,9 +44,16 @@ const NavBar: React.FC = () => {
                 color="#dc3545"
               />
               <DefaultButton
-                text={"SingUp"}
+                text={"SignUp"}
                 press={() => router.replace("/RegisterScreen")}
               />
+              {userMarkers.map((marker) => (
+                <FavButton
+                  text={String(marker.id)}
+                  press={() => router.replace(marker.link as Href)}
+                  pined={true}
+                />
+              ))}
             </View>
           )}
         </View>

@@ -6,10 +6,12 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "./DefaultButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { FavButton } from "./FavButton";
+import { useMarkers } from "@/hooks/useMarkers";
 
 const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   isVisible,
@@ -18,6 +20,8 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   const { screenWidth } = useScreenSize();
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
+  
+  const { userMarkers } = useMarkers();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -60,6 +64,14 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               press={() => router.replace("/RegisterScreen")}
               vertical={true}
             />
+            {userMarkers.map((marker) => (
+                <FavButton
+                  text={String(marker.id)}
+                  press={() => router.replace(marker.link as Href)}
+                  pined={true}
+                  vertical={true}
+                />
+              ))}
           </View>
         </SafeAreaView>
       </Animated.View>

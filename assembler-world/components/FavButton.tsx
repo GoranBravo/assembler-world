@@ -4,29 +4,42 @@ import { Image, Pressable, StyleSheet, Text } from "react-native";
 export const FavButton: React.FC<{
   text: string;
   press: () => void;
-}> = ({ text, press }) => {
+  vertical?: boolean;
+  pined?: boolean
+}> = ({ text, press, vertical = false, pined = false }) => {
+  let padH = 0;
+  let padV = 0;
+  if (vertical) {
+    padV = 10;
+  } else {
+    padH = 10;
+  }
   return (
     <Pressable
       onPress={press}
-      style={styles.button}
+      style={[styles.button, { marginLeft: padH, marginBottom: padV }]}
     >
-      <Image style={styles.image} source={require('../assets/images/starUnmark.png')}/>
-      <Image style={styles.image} source={require('../assets/images/starMark.png')}/>
-      <Text>{text}</Text>
+      {pined ? (
+        <Image style={styles.image} source={require('../assets/images/starMark.png')} />
+      ) : (
+        <Image style={styles.image} source={require('../assets/images/starUnmark.png')} />
+      )}
+      <Text style={styles.text}>{text}</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    flexDirection: 'row',
-    marginTop: 15,
     padding: 10,
+    flexDirection: 'row',
     borderRadius: 5,
     alignItems: "center",
+    backgroundColor: "gray"
+  },
+  text: {
     color: "white",
     fontSize: 16,
-    backgroundColor: "gray"
   },
   image: {
     marginRight: 10,
