@@ -45,9 +45,8 @@ const Index: React.FC = () => {
   });
 
   return (
-    
     <ScrollView contentContainerStyle={stylesDaily.container}>
-    <View style={stylesDaily.container}>
+      <View style={stylesDaily.container}>
         <View style={stylesDaily.video}>
           <YoutubeIframe
             height={videoHeight}
@@ -67,10 +66,12 @@ const Index: React.FC = () => {
             número anterior en la siguiente posición de memoria. Utilizando
             offset.
           </Text>
-          <Image source={require("../assets/images/registers.png")} style={{width: videoWidth, height: videoHeight}}></Image>
+          <Image
+            source={require("../assets/images/registers.png")}
+            style={{ width: videoWidth, height: videoHeight }}
+          ></Image>
         </View>
-    </View>
-    
+      </View>
     </ScrollView>
   );
 };

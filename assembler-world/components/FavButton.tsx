@@ -5,7 +5,7 @@ export const FavButton: React.FC<{
   text: string;
   press: () => void;
   vertical?: boolean;
-  pined?: boolean
+  pined?: boolean;
 }> = ({ text, press, vertical = false, pined = false }) => {
   let padH = 0;
   let padV = 0;
@@ -20,9 +20,15 @@ export const FavButton: React.FC<{
       style={[styles.button, { marginLeft: padH, marginBottom: padV }]}
     >
       {pined ? (
-        <Image style={styles.image} source={require('../assets/images/starMark.png')} />
+        <Image
+          style={styles.image}
+          source={require("../assets/images/starMark.png")}
+        />
       ) : (
-        <Image style={styles.image} source={require('../assets/images/starUnmark.png')} />
+        <Image
+          style={styles.image}
+          source={require("../assets/images/starUnmark.png")}
+        />
       )}
       <Text style={styles.text}>{text}</Text>
     </Pressable>
@@ -32,10 +38,10 @@ export const FavButton: React.FC<{
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 5,
     alignItems: "center",
-    backgroundColor: "gray"
+    backgroundColor: "gray",
   },
   text: {
     color: "white",

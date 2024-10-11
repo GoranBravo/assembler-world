@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import { useColorScheme } from 'react-native';
-import { Colors } from '@/constants/Colors';
-import { UserPreferencesContext } from '@/context/UserPreferencesContext';
+import { useContext } from "react";
+import { useColorScheme } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 interface ThemeProps {
   light?: string;
@@ -15,11 +15,12 @@ export function useThemeColor(
   const systemTheme = useColorScheme();
   const { theme: userTheme } = useContext(UserPreferencesContext);
 
-  const theme = userTheme === 'dark' || userTheme === 'light'
-    ? userTheme
-    : systemTheme === 'dark' || systemTheme === 'light'
-    ? systemTheme
-    : 'light';
+  const theme =
+    userTheme === "dark" || userTheme === "light"
+      ? userTheme
+      : systemTheme === "dark" || systemTheme === "light"
+        ? systemTheme
+        : "light";
 
   const colorFromProps = props[theme];
 

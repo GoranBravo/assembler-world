@@ -20,7 +20,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   const { screenWidth } = useScreenSize();
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
-  
+
   const { userMarkers } = useMarkers();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -42,8 +42,11 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   return isVisible ? (
     <View style={styles.overlay}>
       <Animated.View style={[styles.container, animatedStyle]}>
-        <SafeAreaView style={{backgroundColor: "#E47A17"}}>
-          <Pressable style={styles.header} onPress={() => router.replace("/LoginScreen")}>
+        <SafeAreaView style={{ backgroundColor: "#E47A17" }}>
+          <Pressable
+            style={styles.header}
+            onPress={() => router.replace("/LoginScreen")}
+          >
             <Text style={styles.title}>Iniciar Sesion</Text>
           </Pressable>
           <View style={styles.buttonsContainer}>
@@ -65,13 +68,13 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               vertical={true}
             />
             {userMarkers.map((marker) => (
-                <FavButton
-                  text={String(marker.id)}
-                  press={() => router.replace(marker.link as Href)}
-                  pined={true}
-                  vertical={true}
-                />
-              ))}
+              <FavButton
+                text={String(marker.id)}
+                press={() => router.replace(marker.link as Href)}
+                pined={true}
+                vertical={true}
+              />
+            ))}
           </View>
         </SafeAreaView>
       </Animated.View>
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E47A17",
     height: 65,
     justifyContent: "center",
-  }
+  },
 });
 
 export default Slider;

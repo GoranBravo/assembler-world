@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";

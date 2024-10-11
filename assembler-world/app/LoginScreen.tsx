@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
@@ -14,7 +8,7 @@ import { usePageWidth } from "@/hooks/usePageWidth";
 
 const LoginScreen: React.FC = () => {
   const { pageWidth } = usePageWidth();
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

@@ -7,7 +7,11 @@ interface RegisterResponse {
   error?: string;
 }
 
-export const registerCheck = async (email: string, nombre: string, password: string): Promise<RegisterResponse> => {
+export const registerCheck = async (
+  email: string,
+  nombre: string,
+  password: string
+): Promise<RegisterResponse> => {
   const res = await fetch(signup, {
     method: "POST",
     headers: {

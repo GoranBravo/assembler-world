@@ -7,7 +7,10 @@ interface LoginResponse {
   error?: string;
 }
 
-export const loginCheck = async (email: string, password: string): Promise<LoginResponse> => {
+export const loginCheck = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
   const res = await fetch(login, {
     method: "POST",
     headers: {
