@@ -1,63 +1,27 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { Text, View, ScrollView, Image } from "react-native";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { usePageWidth } from "@/hooks/usePageWidth";
+import css from "@/styles/css";
 
 const Index: React.FC = () => {
-  const { videoWidth, videoHeight, pageWidth } = usePageWidth();
-
-  const stylesDaily = StyleSheet.create({
-    video: {
-      width: videoWidth,
-      height: videoHeight,
-      marginVertical: 20,
-    },
-    container: {
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: useThemeColor({}, "background"),
-    },
-    textContainer: {
-      width: pageWidth,
-    },
-    h1: {
-      textAlign: "center",
-      color: useThemeColor({}, "text"),
-      fontSize: 34,
-      fontWeight: "bold",
-      marginBottom: 20,
-    },
-    h2: {
-      fontSize: 28,
-      color: useThemeColor({}, "text"),
-      marginBottom: 10,
-      fontWeight: "600",
-      textAlign: "center",
-    },
-    mainText: {
-      fontSize: 16,
-      color: useThemeColor({}, "text"),
-      lineHeight: 24,
-      textAlign: "left",
-      marginBottom: 10,
-    },
-  });
+  const { videoWidth, videoHeight } = usePageWidth();
+  const styles = css()
 
   return (
-    <ScrollView contentContainerStyle={stylesDaily.container}>
-      <View style={stylesDaily.container}>
-        <View style={stylesDaily.video}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.video}>
           <YoutubeIframe
             height={videoHeight}
             width={videoWidth}
             videoId="9wvzEOq1imo"
           />
         </View>
-        <View style={stylesDaily.textContainer}>
-          <Text style={stylesDaily.h1}>Problema del Día</Text>
-          <Text style={stylesDaily.h2}>TP Assembly</Text>
-          <Text style={stylesDaily.mainText}>
+        <View style={styles.textContainer}>
+          <Text style={styles.h1}>Problema del Día</Text>
+          <Text style={styles.h2}>TP Assembly</Text>
+          <Text style={styles.mainText}>
             {" "}
             1- Probar número más grande que pueda asignarse directamente, y que
             todos los anteriores al mismo puedan asignarse directamente. Deducir

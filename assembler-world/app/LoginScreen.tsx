@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
 import { router } from "expo-router";
-import { usePageWidth } from "@/hooks/usePageWidth";
+import css from "@/styles/css";
 
 const LoginScreen: React.FC = () => {
-  const { pageWidth } = usePageWidth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const styles = css()
 
   const handleLogin = async () => {
     const Data = await loginCheck(email, password);
@@ -32,51 +32,8 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: useThemeColor({}, "background"),
-    },
-    input: {
-      width: pageWidth,
-      height: 50,
-      borderColor: "#ddd",
-      borderWidth: 1,
-      borderRadius: 5,
-      marginBottom: 15,
-      paddingHorizontal: 10,
-      backgroundColor: "#fff",
-    },
-    button: {
-      width: pageWidth,
-      height: 50,
-      backgroundColor: "#007BFF",
-      borderRadius: 5,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    buttonText: {
-      color: "white",
-      fontSize: 16,
-      fontWeight: "bold",
-    },
-    header: {
-      fontSize: 24,
-      fontWeight: "bold",
-      marginBottom: 20,
-      color: useThemeColor({}, "text"),
-    },
-    link: {
-      marginTop: 10,
-      color: "#007BFF",
-      fontSize: 16,
-    },
-  });
-
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.flex]}>
       <Text style={styles.header}>Iniciar Sesión</Text>
       <TextInput
         style={styles.input}
