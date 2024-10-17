@@ -7,15 +7,12 @@ interface MarkerResponse {
   error?: string;
 }
 
-export const getUserMarkers = async (
-  email: string
-): Promise<MarkerResponse> => {
-  const url = `${getMarkers}?email=${encodeURIComponent(email)}`;
-
-  const res = await fetch(url, {
+export const getUserMarkers = async (token: string): Promise<MarkerResponse> => {
+  const res = await fetch(getMarkers, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "auth": token
     },
   });
 

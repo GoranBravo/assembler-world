@@ -4,12 +4,15 @@ import { UserPreferencesProvider } from "@/context/UserPreferencesContext";
 import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { MarkersProvider } from "@/context/MarkersContext";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <UserPreferencesProvider>
-      <NavBar />
-      <View style={styles.container}>{children}</View>
+      <MarkersProvider>
+        <NavBar />
+        <View style={styles.container}>{children}</View>
+      </MarkersProvider>
     </UserPreferencesProvider>
   );
 };

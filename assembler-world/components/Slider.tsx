@@ -6,7 +6,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Href, router } from "expo-router";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "./DefaultButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
@@ -21,7 +21,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
 
-  const { userMarkers } = useMarkers();
+  const { markers } = useMarkers();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -67,14 +67,26 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               press={() => router.replace("/RegisterScreen")}
               vertical={true}
             />
-            {userMarkers.map((marker) => (
-              <FavButton
-                text={String(marker.id)}
-                press={() => router.replace(marker.link as Href)}
-                pined={true}
-                vertical={true}
-              />
-            ))}
+            <FavButton
+              key={0}
+              markerId={0}
+              text={"Ejemplo"}
+              press={"/"}
+              pined={true}
+              vertical={true}
+            />
+            {Array.isArray(markers) && markers.length > 0
+              ? markers.map((marker) => (
+                  <FavButton
+                    key={marker.id}
+                    markerId={marker.id}
+                    text={marker.nombre}
+                    press={marker.link}
+                    pined={true}
+                    vertical={true}
+                  />
+                ))
+              : null}
           </View>
         </SafeAreaView>
       </Animated.View>
