@@ -3,7 +3,7 @@ import { usePageWidth } from "@/hooks/usePageWidth";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 const css = () => {
-  const { videoWidth, videoHeight, pageWidth } = usePageWidth();
+  const { videoWidth, videoHeight, pageWidth, screenWidth } = usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
 
@@ -18,11 +18,26 @@ const css = () => {
       alignItems: "center",
       backgroundColor,
     },
-    flex: {
-      flex: 1
-    },
     textContainer: {
       width: pageWidth,
+    },
+    floatingBox: {
+      position: "absolute",
+      left: ((screenWidth - videoWidth) / 2) + videoWidth,
+      right: 0,
+      top: 0,
+      height: videoHeight,
+      marginRight: 20,
+      marginTop: 20,
+      marginLeft: 15,
+      backgroundColor: "#313131",
+      borderRadius: 10,
+      paddingHorizontal: 10,
+      paddingTop: 10,
+      shadowColor: "#000",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
     },
     h1: {
       textAlign: "center",
@@ -44,40 +59,6 @@ const css = () => {
       lineHeight: 24,
       textAlign: "left",
       marginBottom: 10,
-    },
-    input: {
-      width: pageWidth,
-      height: 50,
-      borderColor: "#ddd",
-      borderWidth: 1,
-      borderRadius: 5,
-      marginBottom: 15,
-      paddingHorizontal: 10,
-      backgroundColor: "#fff",
-    },
-    button: {
-      width: pageWidth,
-      height: 50,
-      backgroundColor: "#007BFF",
-      borderRadius: 5,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    header: {
-      fontSize: 24,
-      fontWeight: "bold",
-      marginBottom: 20,
-      color,
-    },
-    link: {
-      marginTop: 10,
-      color: "#007BFF",
-      fontSize: 16,
-    },
-    buttonText: {
-      color: "white",
-      fontSize: 16,
-      fontWeight: "bold",
     },
   });
 };

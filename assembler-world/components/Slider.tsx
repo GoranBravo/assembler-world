@@ -1,6 +1,6 @@
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,6 +12,7 @@ import { DefaultButton } from "./DefaultButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { FavButton } from "./FavButton";
 import { useMarkers } from "@/hooks/useMarkers";
+import css from "@/styles/css";
 
 const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   isVisible,
@@ -20,8 +21,8 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   const { screenWidth } = useScreenSize();
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
-
   const { markers } = useMarkers();
+  const stylesC = css();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -67,26 +68,92 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               press={() => router.replace("/RegisterScreen")}
               vertical={true}
             />
-            <FavButton
-              key={0}
-              markerId={0}
-              text={"Ejemplo"}
-              press={"/"}
-              pined={true}
-              vertical={true}
-            />
-            {Array.isArray(markers) && markers.length > 0
-              ? markers.map((marker) => (
-                  <FavButton
-                    key={marker.id}
-                    markerId={marker.id}
-                    text={marker.nombre}
-                    press={marker.link}
-                    pined={true}
-                    vertical={true}
-                  />
-                ))
-              : null}
+            <ScrollView>
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              <FavButton
+                key={0}
+                markerId={0}
+                text={"Ejemplo"}
+                press={"/"}
+                pined={true}
+                vertical={true}
+              />
+              {Array.isArray(markers) && markers.length > 0
+                ? markers.map((marker) => (
+                    <FavButton
+                      key={marker.id}
+                      markerId={marker.id}
+                      text={marker.nombre}
+                      press={marker.link}
+                      pined={true}
+                      vertical={true}
+                    />
+                  ))
+                : null}
+            </ScrollView>
           </View>
         </SafeAreaView>
       </Animated.View>

@@ -21,5 +21,5 @@ export const usePageWidth = () => {
 
     setVideoHeight(videoWidth * (9 / 16));
   }, [screenWidth, pageWidth, screenSize, videoWidth]);
-  return { pageWidth, videoWidth, videoHeight };
+  return { pageWidth, videoWidth, videoHeight, screenWidth };
 };

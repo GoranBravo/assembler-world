@@ -14,7 +14,6 @@ const NavBar: React.FC = () => {
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
-
   const { markers } = useMarkers();
 
   return (

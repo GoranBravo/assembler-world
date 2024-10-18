@@ -3,10 +3,15 @@ import { Text, View, ScrollView, Image } from "react-native";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { usePageWidth } from "@/hooks/usePageWidth";
 import css from "@/styles/css";
+import { useMarkers } from "@/hooks/useMarkers";
+import { FavButton } from "@/components/FavButton";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
-  const styles = css()
+  const styles = css();
+  const { markers } = useMarkers();
+  const { screenSize } = useScreenSize();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -36,6 +41,37 @@ const Index: React.FC = () => {
           ></Image>
         </View>
       </View>
+      {screenSize == "large" && (
+        <ScrollView style={styles.floatingBox}>
+          <FavButton
+            key={0}
+            markerId={0}
+            text={"Ejemplo"}
+            press={"/"}
+            pined={true}
+            vertical={true}
+          />
+          <FavButton
+            key={1}
+            markerId={1}
+            text={"Ejemplo"}
+            press={"/"}
+            pined={true}
+            vertical={true}
+          />
+          {Array.isArray(markers) && markers.length > 0
+            ? markers.map((marker) => (
+                <FavButton
+                  key={marker.id}
+                  markerId={marker.id}
+                  text={String(marker.id)}
+                  press={marker.link}
+                  pined={true}
+                />
+              ))
+            : null}
+        </ScrollView>
+      )}
     </ScrollView>
   );
 };
