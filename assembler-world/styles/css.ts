@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
 import { usePageWidth } from "@/hooks/usePageWidth";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
-  const { videoWidth, videoHeight, pageWidth, screenWidth } = usePageWidth();
+  const { screenWidth } = useScreenSize();
+  const { videoWidth, videoHeight, pageWidth, widthSlider } = usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
 
@@ -17,6 +19,9 @@ const css = () => {
       justifyContent: "center",
       alignItems: "center",
       backgroundColor,
+    },
+    flex: {
+      flex: 1
     },
     textContainer: {
       width: pageWidth,
@@ -59,6 +64,74 @@ const css = () => {
       lineHeight: 24,
       textAlign: "left",
       marginBottom: 10,
+    },
+    input: {
+      width: pageWidth,
+      height: 50,
+      borderColor: "#ddd",
+      borderWidth: 1,
+      borderRadius: 5,
+      marginBottom: 15,
+      paddingHorizontal: 10,
+      backgroundColor: "#fff",
+    },
+    button: {
+      width: pageWidth,
+      height: 50,
+      backgroundColor: "#007BFF",
+      borderRadius: 5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    header: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+      color,
+    },
+    link: {
+      marginTop: 10,
+      color: "#007BFF",
+      fontSize: 16,
+    },
+    buttonText: {
+      color: "white",
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      justifyContent: "flex-start",
+      zIndex: 1000,
+    },
+    containerSlider: {
+      position: "absolute",
+      right: 0,
+      top: 0,
+      bottom: 0,
+      width: widthSlider,
+      backgroundColor: "#164AAD",
+      shadowColor: "#000",
+      shadowOpacity: 0.5,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 8,
+      zIndex: 1000,
+    },
+    buttonsContainer: {
+      paddingHorizontal: 20,
+      backgroundColor: "#164AAD",
+      paddingTop: 20,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center",
+    },
+    headerSlider: {
+      backgroundColor: "#E47A17",
+      height: 65,
+      justifyContent: "center",
     },
   });
 };

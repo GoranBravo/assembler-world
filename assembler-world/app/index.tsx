@@ -64,9 +64,10 @@ const Index: React.FC = () => {
                 <FavButton
                   key={marker.id}
                   markerId={marker.id}
-                  text={String(marker.id)}
+                  text={marker.nombre}
                   press={marker.link}
                   pined={true}
+                  vertical={true}
                 />
               ))
             : null}

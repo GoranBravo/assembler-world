@@ -7,14 +7,11 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "@/components/DefaultButton";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
-import { FavButton } from "./FavButton";
-import { useMarkers } from "@/hooks/useMarkers";
 
 const NavBar: React.FC = () => {
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
-  const { markers } = useMarkers();
 
   return (
     <>
@@ -26,16 +23,7 @@ const NavBar: React.FC = () => {
             <Text style={styles.h1}>Assembler World</Text>
           </Pressable>
 
-          {screenSize === "small" && (
-            <Pressable onPress={() => setSliderVisible(true)}>
-              <Image
-                style={styles.sliderImg}
-                source={require("../assets/images/threeLines.png")}
-              />
-            </Pressable>
-          )}
-
-          {screenSize !== "small" && (
+          {screenSize === "large" && (
             <View style={styles.buttonsContainer}>
               <DefaultButton
                 text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
@@ -46,18 +34,20 @@ const NavBar: React.FC = () => {
                 text={"SignUp"}
                 press={() => router.replace("/RegisterScreen")}
               />
-              {Array.isArray(markers) && markers.length > 0
-                ? markers.map((marker) => (
-                    <FavButton
-                      key={marker.id}
-                      markerId={marker.id}
-                      text={String(marker.id)}
-                      press={marker.link}
-                      pined={true}
-                    />
-                  ))
-                : null}
+              <DefaultButton
+                text={"LogIn"}
+                press={() => router.replace("/LoginScreen")}
+              />
             </View>
+          )}
+
+          {screenSize !== "large" && (
+            <Pressable onPress={() => setSliderVisible(true)}>
+              <Image
+                style={styles.sliderImg}
+                source={require("../assets/images/threeLines.png")}
+              />
+            </Pressable>
           )}
         </View>
       </SafeAreaView>

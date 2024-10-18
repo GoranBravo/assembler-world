@@ -19,10 +19,11 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   onClose,
 }) => {
   const { screenWidth } = useScreenSize();
+  
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
   const { markers } = useMarkers();
-  const stylesC = css();
+  const styles = css();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -42,10 +43,10 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
 
   return isVisible ? (
     <View style={styles.overlay}>
-      <Animated.View style={[styles.container, animatedStyle]}>
+      <Animated.View style={[styles.containerSlider, animatedStyle]}>
         <SafeAreaView style={{ backgroundColor: "#E47A17" }}>
           <Pressable
-            style={styles.header}
+            style={styles.headerSlider}
             onPress={() => router.replace("/LoginScreen")}
           >
             <Text style={styles.title}>Iniciar Sesion</Text>
@@ -160,42 +161,5 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
     </View>
   ) : null;
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-start",
-    zIndex: 1000,
-  },
-  container: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: "70%",
-    backgroundColor: "#164AAD",
-    shadowColor: "#000",
-    shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    zIndex: 1000,
-  },
-  buttonsContainer: {
-    paddingHorizontal: 20,
-    backgroundColor: "#164AAD",
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  header: {
-    backgroundColor: "#E47A17",
-    height: 65,
-    justifyContent: "center",
-  },
-});
 
 export default Slider;
