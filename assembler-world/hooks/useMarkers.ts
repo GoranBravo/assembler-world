@@ -4,7 +4,7 @@ import { getValueFor } from "@/utils/storage";
 import { useMarkersContext } from "@/context/MarkersContext";
 
 export const useMarkers = () => {
-  const { markers, setMarkers } = useMarkersContext();
+  const { markers, setMarkers, trigger } = useMarkersContext();
 
   useEffect(() => {
     const fetchMarkers = async () => {
@@ -12,7 +12,6 @@ export const useMarkers = () => {
         const token = await getValueFor("token");
         if (token) {
           const data = await getUserMarkers(token);
-          
           setMarkers(data.markers);
         }
       } catch (error) {
@@ -21,7 +20,7 @@ export const useMarkers = () => {
     };
 
     fetchMarkers();
-  }, []);
+  }, [trigger]);
 
   return { markers };
 };

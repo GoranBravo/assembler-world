@@ -4,8 +4,11 @@ import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
 import { router } from "expo-router";
 import css from "@/styles/css";
+import { useAuthContext } from "@/context/AuthContext";
 
 const LoginScreen: React.FC = () => {
+  
+  const { login } = useAuthContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +23,7 @@ const LoginScreen: React.FC = () => {
       if (Data.token) {
         const result = await save("token", Data.token);
         if (result) {
+          login()
           router.replace("/");
         } else {
           setErrorMessage("Token Save Error.");

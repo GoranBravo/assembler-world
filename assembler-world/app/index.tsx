@@ -43,22 +43,6 @@ const Index: React.FC = () => {
       </View>
       {screenSize == "large" && (
         <ScrollView style={styles.floatingBox}>
-          <FavButton
-            key={0}
-            markerId={0}
-            text={"Ejemplo"}
-            press={"/"}
-            pined={true}
-            vertical={true}
-          />
-          <FavButton
-            key={1}
-            markerId={1}
-            text={"Ejemplo"}
-            press={"/"}
-            pined={true}
-            vertical={true}
-          />
           {Array.isArray(markers) && markers.length > 0
             ? markers.map((marker) => (
                 <FavButton

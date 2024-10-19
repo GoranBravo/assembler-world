@@ -4,6 +4,7 @@ interface MarkersContextType {
   markers: { link: string; id: number; nombre: string }[];
   setMarkers: React.Dispatch<React.SetStateAction<{ link: string; id: number; nombre: string }[]>>;
   refreshMarkers: () => void; 
+  trigger: boolean;
 }
 
 const MarkersContext = createContext<MarkersContextType | undefined>(undefined);
@@ -21,10 +22,11 @@ export const MarkersProvider = ({ children }: { children: ReactNode }) => {
   const [trigger, setTrigger] = useState(false); 
   
   const refreshMarkers = () => {
-    setTrigger(!trigger); 
+    setTrigger(prev => !prev);
   };
+  
   return (
-    <MarkersContext.Provider value={{ markers, setMarkers, refreshMarkers }}>
+    <MarkersContext.Provider value={{ markers, setMarkers, refreshMarkers, trigger }}>
       {children}
     </MarkersContext.Provider>
   );

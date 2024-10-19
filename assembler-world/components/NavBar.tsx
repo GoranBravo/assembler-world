@@ -7,18 +7,21 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "@/components/DefaultButton";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
-import { useMarkers } from "@/hooks/useMarkers";
 import { getValueFor } from "@/utils/storage";
 import { addMarker } from "@/apis/addMarker";
 import { useRouteInfo } from "expo-router/build/hooks";
 import { markerLink } from "@/apis/linkMarker";
+import { useMarkersContext } from "@/context/MarkersContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const NavBar: React.FC = () => {
+  const { logout, isLoggedIn } = useAuthContext();
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
-  const route = useRouteInfo();  
-  // const { refreshMarkers } = useMarkers();
+  const route = useRouteInfo();
+
+  const { refreshMarkers } = useMarkersContext();
   const toMarker = async () => {
     try {
       const token = await getValueFor("token");
@@ -26,12 +29,17 @@ const NavBar: React.FC = () => {
         const data = await addMarker(route.pathname, route.pathname, token);
         if (data.markerId) {
           await markerLink(data.markerId, token);
-          // refreshMarkers
+          refreshMarkers();
         }
       }
     } catch (error) {
       console.error("Error adding marker:", error);
     }
+  };
+
+  const handleLogOut = () => {
+    //TODO: LogOut Function
+    logout();
   };
 
   return (
@@ -51,18 +59,26 @@ const NavBar: React.FC = () => {
                 press={() => setTheme(theme === "light" ? "dark" : "light")}
                 color="#dc3545"
               />
-              <DefaultButton
-                text={"SignUp"}
-                press={() => router.replace("/RegisterScreen")}
-              />
-              <DefaultButton
-                text={"LogIn"}
-                press={() => router.replace("/LoginScreen")}
-              />
-              <DefaultButton
-                text={"Add to Markers"}
-                press={() => toMarker()}
-              />
+              {isLoggedIn ? (
+                <>
+                  <DefaultButton
+                    text={"Añadir a Favoritos"}
+                    press={() => toMarker()}
+                  />
+                  <DefaultButton text={"Cerrar Sesion"} press={handleLogOut} />
+                </>
+              ) : (
+                <>
+                  <DefaultButton
+                    text={"Registrarse"}
+                    press={() => router.replace("/RegisterScreen")}
+                  />
+                  <DefaultButton
+                    text={"Iniciar Sesion"}
+                    press={() => router.replace("/LoginScreen")}
+                  />
+                </>
+              )}
             </View>
           )}
 

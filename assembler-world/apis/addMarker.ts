@@ -3,7 +3,7 @@ import { saveMarker } from "@/constants/UrlApis";
 interface linkMarkerResponse {
   message: string;
   success: boolean;
-  markerId?: number;
+  markerId: number;
   error?: string;
 }
 

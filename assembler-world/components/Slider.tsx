@@ -17,16 +17,22 @@ import { addMarker } from "@/apis/addMarker";
 import { useRouteInfo } from "expo-router/build/hooks";
 import { getValueFor } from "@/utils/storage";
 import { markerLink } from "@/apis/linkMarker";
+import { useMarkersContext } from "@/context/MarkersContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   isVisible,
   onClose,
 }) => {
-  const { screenWidth } = useScreenSize();
-
-  const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
+
+  const { refreshMarkers } = useMarkersContext();
+  const { logout, isLoggedIn } = useAuthContext();
+
+  const { screenWidth } = useScreenSize();
+  const translateX = useSharedValue(screenWidth * 0.7);
   const { markers } = useMarkers();
+
   const styles = css();
   const route = useRouteInfo();
 
@@ -51,26 +57,38 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
       const token = await getValueFor("token");
       if (token) {
         const data = await addMarker(route.pathname, route.pathname, token);
-        if (data.markerId) {
-          await markerLink(data.markerId, token);
-          // refreshMarkers
-        }
+        await markerLink(data.markerId, token);
+        refreshMarkers();
       }
     } catch (error) {
       console.error("Error adding marker:", error);
     }
   };
 
+  const handleLogOut = () => {
+    //TODO: LogOut Function
+    logout();
+  };
+
   return isVisible ? (
     <View style={styles.overlay}>
       <Animated.View style={[styles.containerSlider, animatedStyle]}>
         <SafeAreaView style={{ backgroundColor: "#E47A17" }}>
-          <Pressable
-            style={styles.headerSlider}
-            onPress={() => router.replace("/LoginScreen")}
-          >
-            <Text style={styles.title}>Iniciar Sesion</Text>
-          </Pressable>
+          <>
+            {isLoggedIn ? (
+              <Pressable style={styles.headerSlider} onPress={handleLogOut}>
+                <Text style={styles.title}>Cerrar Sesion</Text>
+              </Pressable>
+            ) : (
+              <Pressable
+                style={styles.headerSlider}
+                onPress={() => router.replace("/LoginScreen")}
+              >
+                <Text style={styles.title}>Iniciar Sesion</Text>
+              </Pressable>
+            )}
+          </>
+
           <View style={styles.buttonsContainer}>
             <DefaultButton
               text={"Cerrar"}
@@ -84,25 +102,22 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               color="#dc3545"
               vertical={true}
             />
+            <>
+              {isLoggedIn ? (
+                <DefaultButton
+                  text={"Registrarse"}
+                  press={() => router.replace("/RegisterScreen")}
+                  vertical={true}
+                />
+              ) : null}
+            </>
             <DefaultButton
-              text={"SingUp"}
-              press={() => router.replace("/RegisterScreen")}
-              vertical={true}
-            />
-            <DefaultButton
-              text={"Add to Marker"}
+              text={"Añadir a Favoritos"}
               press={() => toMarker()}
               vertical={true}
+              color="#D29E16"
             />
             <ScrollView>
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
               {Array.isArray(markers) && markers.length > 0
                 ? markers.map((marker) => (
                     <FavButton

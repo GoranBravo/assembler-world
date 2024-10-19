@@ -3,7 +3,7 @@ import { Href, router } from "expo-router";
 import { Image, Pressable, StyleSheet, Text } from "react-native";
 import { getValueFor } from "@/utils/storage";
 import { markerLink } from "@/apis/linkMarker";
-import { useMarkers } from "@/hooks/useMarkers";
+import { useMarkersContext } from "@/context/MarkersContext";
 
 export const FavButton: React.FC<{
   markerId: number;
@@ -19,15 +19,15 @@ export const FavButton: React.FC<{
   } else {
     padH = 10;
   }
-  const { refreshMarkers } = useMarkers();
+  const { refreshMarkers } = useMarkersContext();
   const vinMarker = async () => {
     try {
       const token = await getValueFor("token");
       token ? (await markerLink(markerId, token)) : null;
+      refreshMarkers()
     } catch (error) {
       console.error("Error deleating marker:", error);
     }
-    {refreshMarkers}
   };
   return (
     <Pressable onPress={() => router.replace(press as Href)} style={[styles.button, { marginLeft: padH, marginBottom: padV }]}>
