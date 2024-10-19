@@ -21,7 +21,7 @@ export const useMarkers = () => {
     };
 
     fetchMarkers();
-  }, [refreshMarkers]);
+  }, []);
 
   return { markers, refreshMarkers };
 };

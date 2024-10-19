@@ -1,6 +1,6 @@
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -13,17 +13,22 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { FavButton } from "./FavButton";
 import { useMarkers } from "@/hooks/useMarkers";
 import css from "@/styles/css";
+import { addMarker } from "@/apis/addMarker";
+import { useRouteInfo } from "expo-router/build/hooks";
+import { getValueFor } from "@/utils/storage";
+import { markerLink } from "@/apis/linkMarker";
 
 const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
   isVisible,
   onClose,
 }) => {
   const { screenWidth } = useScreenSize();
-  
+
   const translateX = useSharedValue(screenWidth * 0.7);
   const { theme, setTheme } = useContext(UserPreferencesContext);
   const { markers } = useMarkers();
   const styles = css();
+  const route = useRouteInfo();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -40,6 +45,24 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
       translateX.value = screenWidth * 0.7;
     }
   }, [isVisible]);
+
+  const { refreshMarkers } = useMarkers();
+  const toMarker = async () => {
+    try {
+      const token = await getValueFor("token");
+      if (token) {
+        const data = await addMarker(route.pathname, route.pathname, token);
+        console.log(data.markerId);
+        
+        await markerLink(data.markerId || 0, token);
+      }
+    } catch (error) {
+      console.error("Error deleating marker:", error);
+    }
+    {
+      refreshMarkers;
+    }
+  };
 
   return isVisible ? (
     <View style={styles.overlay}>
@@ -69,71 +92,12 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               press={() => router.replace("/RegisterScreen")}
               vertical={true}
             />
+            <DefaultButton
+              text={"Add to Marker"}
+              press={() => toMarker()}
+              vertical={true}
+            />
             <ScrollView>
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
-              <FavButton
-                key={0}
-                markerId={0}
-                text={"Ejemplo"}
-                press={"/"}
-                pined={true}
-                vertical={true}
-              />
               <FavButton
                 key={0}
                 markerId={0}

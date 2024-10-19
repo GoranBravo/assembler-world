@@ -7,11 +7,26 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "@/components/DefaultButton";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
+import { useMarkers } from "@/hooks/useMarkers";
+import { getValueFor } from "@/utils/storage";
+import { addMarker } from "@/apis/addMarker";
+import { useRouteInfo } from "expo-router/build/hooks";
 
 const NavBar: React.FC = () => {
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
+  const route = useRouteInfo();  
+  const { refreshMarkers } = useMarkers();
+  const toMarker = async () => {
+    try {
+      const token = await getValueFor("token");
+      token ? (await addMarker(route.pathname, route.pathname, token)) : null;
+    } catch (error) {
+      console.error("Error deleating marker:", error);
+    }
+    {refreshMarkers}
+  };
 
   return (
     <>
@@ -37,6 +52,10 @@ const NavBar: React.FC = () => {
               <DefaultButton
                 text={"LogIn"}
                 press={() => router.replace("/LoginScreen")}
+              />
+              <DefaultButton
+                text={"Add to Markers"}
+                press={() => toMarker()}
               />
             </View>
           )}
