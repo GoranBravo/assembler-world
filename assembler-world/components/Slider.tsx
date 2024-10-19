@@ -46,21 +46,18 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
     }
   }, [isVisible]);
 
-  const { refreshMarkers } = useMarkers();
   const toMarker = async () => {
     try {
       const token = await getValueFor("token");
       if (token) {
         const data = await addMarker(route.pathname, route.pathname, token);
-        console.log(data.markerId);
-        
-        await markerLink(data.markerId || 0, token);
+        if (data.markerId) {
+          await markerLink(data.markerId, token);
+          // refreshMarkers
+        }
       }
     } catch (error) {
-      console.error("Error deleating marker:", error);
-    }
-    {
-      refreshMarkers;
+      console.error("Error adding marker:", error);
     }
   };
 

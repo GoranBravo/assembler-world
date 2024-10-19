@@ -11,21 +11,27 @@ import { useMarkers } from "@/hooks/useMarkers";
 import { getValueFor } from "@/utils/storage";
 import { addMarker } from "@/apis/addMarker";
 import { useRouteInfo } from "expo-router/build/hooks";
+import { markerLink } from "@/apis/linkMarker";
 
 const NavBar: React.FC = () => {
   const { screenSize } = useScreenSize();
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
   const route = useRouteInfo();  
-  const { refreshMarkers } = useMarkers();
+  // const { refreshMarkers } = useMarkers();
   const toMarker = async () => {
     try {
       const token = await getValueFor("token");
-      token ? (await addMarker(route.pathname, route.pathname, token)) : null;
+      if (token) {
+        const data = await addMarker(route.pathname, route.pathname, token);
+        if (data.markerId) {
+          await markerLink(data.markerId, token);
+          // refreshMarkers
+        }
+      }
     } catch (error) {
-      console.error("Error deleating marker:", error);
+      console.error("Error adding marker:", error);
     }
-    {refreshMarkers}
   };
 
   return (

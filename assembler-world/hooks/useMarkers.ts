@@ -4,7 +4,7 @@ import { getValueFor } from "@/utils/storage";
 import { useMarkersContext } from "@/context/MarkersContext";
 
 export const useMarkers = () => {
-  const { markers, setMarkers, refreshMarkers } = useMarkersContext();
+  const { markers, setMarkers } = useMarkersContext();
 
   useEffect(() => {
     const fetchMarkers = async () => {
@@ -23,5 +23,5 @@ export const useMarkers = () => {
     fetchMarkers();
   }, []);
 
-  return { markers, refreshMarkers };
+  return { markers };
 };
