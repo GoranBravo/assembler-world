@@ -1,9 +1,10 @@
 import React from "react";
 import { Href, router } from "expo-router";
-import { Image, Pressable, StyleSheet, Text } from "react-native";
+import { Image, Pressable, Text } from "react-native";
 import { getValueFor } from "@/utils/storage";
 import { markerLink } from "@/apis/linkMarker";
 import { useMarkersContext } from "@/context/MarkersContext";
+import css from "@/styles/css";
 
 export const FavButton: React.FC<{
   markerId: number;
@@ -20,6 +21,7 @@ export const FavButton: React.FC<{
     padH = 10;
   }
   const { refreshMarkers } = useMarkersContext();
+  const styles = css()
   const vinMarker = async () => {
     try {
       const token = await getValueFor("token");
@@ -34,36 +36,17 @@ export const FavButton: React.FC<{
       <Pressable onPress={() => vinMarker()}>
         {pined ? (
           <Image
-            style={styles.image}
+            style={styles.favImage}
             source={require("../assets/images/starMark.png")}
           />
         ) : (
           <Image
-            style={styles.image}
+            style={styles.favImage}
             source={require("../assets/images/starUnmark.png")}
           />
         )}
       </Pressable>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.buttonText}>{text}</Text>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-    flexDirection: "row",
-    borderRadius: 5,
-    alignItems: "center",
-    backgroundColor: "gray",
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
-  },
-  image: {
-    marginRight: 10,
-    height: 20,
-    width: 20,
-  },
-});

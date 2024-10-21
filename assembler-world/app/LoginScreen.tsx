@@ -47,7 +47,7 @@ const LoginScreen: React.FC = () => {
         keyboardType="email-address"
       />
       {errorMessage ? (
-        <Text style={{ fontSize: 20, color: "red", textAlign: "left" }}>
+        <Text style={styles.errorMsg}>
           {errorMessage}
         </Text>
       ) : null}
@@ -58,7 +58,7 @@ const LoginScreen: React.FC = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Pressable style={styles.button} onPress={handleLogin}>
+      <Pressable style={styles.buttonSubmmit} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </Pressable>
       <Pressable onPress={() => router.replace("/RegisterScreen")}>

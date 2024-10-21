@@ -1,5 +1,6 @@
 import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, Text } from "react-native";
+import css from "@/styles/css";
 
 export const DefaultButton: React.FC<{
   text: string;
@@ -14,6 +15,7 @@ export const DefaultButton: React.FC<{
   } else {
     padH = 10;
   }
+  const styles = css()
   return (
     <Pressable
       onPress={press}
@@ -22,19 +24,7 @@ export const DefaultButton: React.FC<{
         { backgroundColor: color, marginLeft: padH, marginBottom: padV },
       ]}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.buttonText}>{text}</Text>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
-  },
-});

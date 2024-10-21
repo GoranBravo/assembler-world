@@ -21,14 +21,14 @@ const css = () => {
       backgroundColor,
     },
     flex: {
-      flex: 1
+      flex: 1,
     },
     textContainer: {
       width: pageWidth,
     },
     floatingBox: {
       position: "absolute",
-      left: ((screenWidth - videoWidth) / 2) + videoWidth,
+      left: (screenWidth - videoWidth) / 2 + videoWidth,
       right: 0,
       top: 0,
       height: videoHeight,
@@ -75,7 +75,7 @@ const css = () => {
       paddingHorizontal: 10,
       backgroundColor: "#fff",
     },
-    button: {
+    buttonSubmmit: {
       width: pageWidth,
       height: 50,
       backgroundColor: "#007BFF",
@@ -94,10 +94,27 @@ const css = () => {
       color: "#007BFF",
       fontSize: 16,
     },
+    button: {
+      padding: 10,
+      borderRadius: 5,
+      alignItems: "center",
+    },
     buttonText: {
       color: "white",
       fontSize: 16,
       fontWeight: "bold",
+    },
+    favButton: {
+      padding: 10,
+      flexDirection: "row",
+      borderRadius: 5,
+      alignItems: "center",
+      backgroundColor: "gray",
+    },  
+    favImage: {
+      marginRight: 10,
+      height: 20,
+      width: 20,
     },
     overlay: {
       ...StyleSheet.absoluteFillObject,
@@ -132,6 +149,36 @@ const css = () => {
       backgroundColor: "#E47A17",
       height: 65,
       justifyContent: "center",
+    },
+    errorMsg: {
+      fontSize: 20,
+      color: "red",
+      textAlign: "left",
+    },
+    navbar: {
+      backgroundColor: "#164AAD",
+      height: 65,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      justifyContent: "space-between",
+    },
+    logoImg: {
+      textAlign: "center",
+      color: "#E47A17",
+      fontSize: 22,
+      textShadowColor: "#000",
+      textShadowOffset: { width: -1, height: 1 },
+      textShadowRadius: 1,
+    },
+    sliderImg: {
+      width: 30,
+      height: 30,
+    },
+    navbarButtonsContainer: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      alignItems: "center",
     },
   });
 };

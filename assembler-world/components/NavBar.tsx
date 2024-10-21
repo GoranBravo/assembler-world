@@ -13,6 +13,7 @@ import { useRouteInfo } from "expo-router/build/hooks";
 import { markerLink } from "@/apis/linkMarker";
 import { useMarkersContext } from "@/context/MarkersContext";
 import { useAuthContext } from "@/context/AuthContext";
+import css from "@/styles/css";
 
 const NavBar: React.FC = () => {
   const { logout, isLoggedIn } = useAuthContext();
@@ -20,6 +21,7 @@ const NavBar: React.FC = () => {
   const [isSliderVisible, setSliderVisible] = useState(false);
   const { theme, setTheme } = useContext(UserPreferencesContext);
   const route = useRouteInfo();
+  const styles = css()
 
   const { refreshMarkers } = useMarkersContext();
   const toMarker = async () => {
@@ -47,13 +49,13 @@ const NavBar: React.FC = () => {
       <SafeAreaView
         style={{ backgroundColor: useThemeColor({}, "background") }}
       >
-        <View style={styles.container}>
+        <View style={styles.navbar}>
           <Pressable onPress={() => router.replace("/")}>
-            <Text style={styles.h1}>Assembler World</Text>
+            <Text style={styles.logoImg}>Assembler World</Text>
           </Pressable>
 
           {screenSize === "large" && (
-            <View style={styles.buttonsContainer}>
+            <View style={styles.navbarButtonsContainer}>
               <DefaultButton
                 text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
                 press={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -100,33 +102,5 @@ const NavBar: React.FC = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#164AAD",
-    height: 65,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    justifyContent: "space-between",
-  },
-  h1: {
-    textAlign: "center",
-    color: "#E47A17",
-    fontSize: 22,
-    textShadowColor: "#000",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 1,
-  },
-  sliderImg: {
-    width: 30,
-    height: 30,
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-});
 
 export default NavBar;
