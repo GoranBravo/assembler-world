@@ -18,13 +18,25 @@ const css = () => {
     container: {
       justifyContent: "center",
       alignItems: "center",
+    },
+    scrollBackground: {
       backgroundColor,
     },
     flex: {
       flex: 1,
     },
     textContainer: {
-      width: pageWidth,
+      width: pageWidth - 40,
+      alignSelf: "flex-start",
+      margin: 20,
+      padding: 20,
+      borderColor: "white",
+      borderWidth: 1,
+      borderRadius: 10,
+    },
+    img: {
+      width: videoHeight,
+      height: videoHeight,
     },
     floatingBox: {
       position: "absolute",
@@ -102,7 +114,6 @@ const css = () => {
     buttonText: {
       color: "white",
       fontSize: 16,
-      fontWeight: "bold",
     },
     favButton: {
       padding: 10,
@@ -163,13 +174,13 @@ const css = () => {
       paddingHorizontal: 20,
       justifyContent: "space-between",
     },
-    logoImg: {
+    logoText: {
       textAlign: "center",
       color: "#E47A17",
       fontSize: 22,
+      fontWeight: "bold",
       textShadowColor: "#000",
-      textShadowOffset: { width: -1, height: 1 },
-      textShadowRadius: 1,
+      textShadowRadius: 5,
     },
     sliderImg: {
       width: 30,

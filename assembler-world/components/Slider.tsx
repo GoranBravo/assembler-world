@@ -102,21 +102,21 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               color="#dc3545"
               vertical={true}
             />
-            <>
-              {isLoggedIn ? (
-                <DefaultButton
-                  text={"Registrarse"}
-                  press={() => router.replace("/RegisterScreen")}
+            {isLoggedIn ? (
+              <>
+              <DefaultButton
+                text={"Registrarse"}
+                press={() => router.replace("/RegisterScreen")}
+                vertical={true}
+              />
+              <DefaultButton
+                  text={"Añadir a Favoritos"}
+                  press={() => toMarker()}
                   vertical={true}
+                  color="#D29E16"
                 />
-              ) : null}
-            </>
-            <DefaultButton
-              text={"Añadir a Favoritos"}
-              press={() => toMarker()}
-              vertical={true}
-              color="#D29E16"
-            />
+              </>
+            ) : (null)}
             <ScrollView>
               {Array.isArray(markers) && markers.length > 0
                 ? markers.map((marker) => (

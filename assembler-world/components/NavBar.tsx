@@ -51,7 +51,7 @@ const NavBar: React.FC = () => {
       >
         <View style={styles.navbar}>
           <Pressable onPress={() => router.replace("/")}>
-            <Text style={styles.logoImg}>Assembler World</Text>
+            <Text style={styles.logoText}>Assembler World</Text>
           </Pressable>
 
           {screenSize === "large" && (

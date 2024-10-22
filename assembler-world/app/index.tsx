@@ -6,15 +6,19 @@ import css from "@/styles/css";
 import { useMarkers } from "@/hooks/useMarkers";
 import { FavButton } from "@/components/FavButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
-  const styles = css();
   const { markers } = useMarkers();
+  
   const { screenSize } = useScreenSize();
+  const { isLoggedIn } = useAuthContext();
+
+  const styles = css();
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollBackground}>
       <View style={styles.container}>
         <View style={styles.video}>
           <YoutubeIframe
@@ -37,11 +41,11 @@ const Index: React.FC = () => {
           </Text>
           <Image
             source={require("../assets/images/registers.png")}
-            style={{ width: videoWidth, height: videoHeight }}
+            style={styles.img}
           ></Image>
         </View>
       </View>
-      {screenSize == "large" && (
+      {screenSize == "large" && isLoggedIn && (
         <ScrollView style={styles.floatingBox}>
           {Array.isArray(markers) && markers.length > 0
             ? markers.map((marker) => (
