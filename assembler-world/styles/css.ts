@@ -85,6 +85,7 @@ const css = () => {
     input: {
       width: pageWidth - 80,
       height: 50,
+      color: "gray",
       borderColor: color,
       borderWidth: 1,
       borderRadius: 5,

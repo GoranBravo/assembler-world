@@ -5,3 +5,7 @@ export const getMarkers = `${urlBase}/user/getMarkers`;
 export const deleteMarker = `${urlBase}/user/deleteMarker`;
 export const saveMarker = `${urlBase}/user/saveMarker`;
 export const linkMarker = `${urlBase}/user/linkMarker`;
+export const taskUpload = `${urlBase}/user/taskUpload`;
+export const deleteTask = `${urlBase}/user/taskDelete`;
+export const editTask = `${urlBase}/user/taskEdit`;
+

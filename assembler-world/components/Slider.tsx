@@ -59,6 +59,8 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
         const data = await addMarker(route.pathname, route.pathname, token);
         await markerLink(data.markerId, token);
         refreshMarkers();
+      } else {
+        console.error("No match for token")
       }
     } catch (error) {
       console.error("Error adding marker:", error);

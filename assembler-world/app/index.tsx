@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { usePageWidth } from "@/hooks/usePageWidth";
 import css from "@/styles/css";
@@ -8,6 +15,8 @@ import { FavButton } from "@/components/FavButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useAuthContext } from "@/context/AuthContext";
 import { router } from "expo-router";
+import { uploadTask } from "@/apis/uploadTask";
+import { getValueFor } from "@/utils/storage";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
@@ -22,17 +31,24 @@ const Index: React.FC = () => {
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const uploadTask = async () => {
-    // try {
-    //   const Data = await upload();
-    //   if (Data.success) {
-    //     router.replace("/");
-    //   } else {
-    //     setErrorMessage("Error: " + Data.message);
-    //   }
-    // } catch {
-    //   setErrorMessage("Server Error");
-    // }
+  const handleTask = async () => {
+    try {
+      const token = await getValueFor("token");
+      if (token) {
+        const Data = await uploadTask(title, content, token);
+        if (Data.success) {
+          router.replace("/");
+        } else {
+          setErrorMessage("Error: " + Data.message);
+        }
+      } else {
+        console.error("No match for token");
+        //TODO: Abrir una nueva pestaña para que el usuario se logge.
+      }
+    } catch (error) {
+      console.error("Error adding marker:", error);
+      setErrorMessage("Server Error");
+    }
   };
 
   return (
@@ -71,21 +87,24 @@ const Index: React.FC = () => {
               ) : null}
               <TextInput
                 style={styles.input}
-                placeholder="Titulo de la Tarea:"
+                placeholder="Titulo"
                 value={title}
                 onChangeText={setTitle}
               />
               <TextInput
                 style={styles.input}
-                placeholder="Consignas:"
+                placeholder="Consignas"
                 value={content}
                 onChangeText={setContent}
               />
               <View style={styles.row}>
-                <Pressable style={styles.buttonSubmmit} onPress={uploadTask}>
+                <Pressable style={styles.buttonSubmmit} onPress={handleTask}>
                   <Text style={styles.buttonText}>Publicar</Text>
                 </Pressable>
-                <Pressable style={[styles.buttonSubmmit, styles.buttonCancel]} onPress={() => router.replace("/")}>
+                <Pressable
+                  style={[styles.buttonSubmmit, styles.buttonCancel]}
+                  onPress={() => router.replace("/")}
+                >
                   <Text style={styles.buttonText}>Cancelar</Text>
                 </Pressable>
               </View>
