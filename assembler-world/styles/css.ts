@@ -5,10 +5,10 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
   const { screenWidth } = useScreenSize();
-  const { videoWidth, videoHeight, pageWidth, widthSlider } = usePageWidth();
+  const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } = usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
-
+  
   return StyleSheet.create({
     video: {
       width: videoWidth,
@@ -18,6 +18,7 @@ const css = () => {
     container: {
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor,
     },
     scrollBackground: {
       backgroundColor,
@@ -25,18 +26,22 @@ const css = () => {
     flex: {
       flex: 1,
     },
+    row: {
+      flexDirection: flexDir,
+    },
     textContainer: {
       width: pageWidth - 40,
-      alignSelf: "flex-start",
-      margin: 20,
+      marginBottom: 20,
       padding: 20,
-      borderColor: "white",
+      borderColor: color,
       borderWidth: 1,
       borderRadius: 10,
     },
     img: {
-      width: videoHeight,
-      height: videoHeight,
+      width: pageWidth - 80,
+      resizeMode: "contain",
+      height: (pageWidth - 80) * (9/16),
+      borderRadius: 7,
     },
     floatingBox: {
       position: "absolute",
@@ -78,9 +83,9 @@ const css = () => {
       marginBottom: 10,
     },
     input: {
-      width: pageWidth,
+      width: pageWidth - 80,
       height: 50,
-      borderColor: "#ddd",
+      borderColor: color,
       borderWidth: 1,
       borderRadius: 5,
       marginBottom: 15,
@@ -88,12 +93,17 @@ const css = () => {
       backgroundColor: "#fff",
     },
     buttonSubmmit: {
-      width: pageWidth,
+      maxWidth: pageWidth - 80,
+      paddingHorizontal: 10,
       height: 50,
       backgroundColor: "#007BFF",
       borderRadius: 5,
       justifyContent: "center",
       alignItems: "center",
+    },
+    buttonCancel: {
+      backgroundColor: "gray",
+      marginLeft: 15,
     },
     header: {
       fontSize: 24,
@@ -165,6 +175,7 @@ const css = () => {
       fontSize: 20,
       color: "red",
       textAlign: "left",
+      marginBottom: 10,
     },
     navbar: {
       backgroundColor: "#164AAD",

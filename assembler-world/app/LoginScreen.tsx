@@ -7,7 +7,6 @@ import css from "@/styles/css";
 import { useAuthContext } from "@/context/AuthContext";
 
 const LoginScreen: React.FC = () => {
-  
   const { login } = useAuthContext();
 
   const [email, setEmail] = useState("");
@@ -15,30 +14,36 @@ const LoginScreen: React.FC = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const styles = css()
+  const styles = css();
 
   const handleLogin = async () => {
-    const Data = await loginCheck(email, password);
-    if (Data.success) {
-      if (Data.token) {
-        const result = await save("token", Data.token);
-        if (result) {
-          login()
-          router.replace("/");
+    try {
+      const Data = await loginCheck(email, password);
+      if (Data.success) {
+        if (Data.token) {
+          const result = await save("token", Data.token);
+          if (result) {
+            login();
+            router.replace("/");
+          } else {
+            setErrorMessage("Token Save Error.");
+          }
         } else {
-          setErrorMessage("Token Save Error.");
+          setErrorMessage("Token Unaviable");
         }
       } else {
-        setErrorMessage("Token Unaviable");
+        setErrorMessage("Error: " + Data.message);
       }
-    } else {
-      setErrorMessage("Error: " + Data.message);
+    } catch {
+      setErrorMessage("Server Error");
     }
   };
-
   return (
     <View style={[styles.container, styles.flex]}>
       <Text style={styles.header}>Iniciar Sesión</Text>
+      {errorMessage ? (
+        <Text style={styles.errorMsg}>{errorMessage}</Text>
+      ) : null}
       <TextInput
         style={styles.input}
         placeholder="Correo Electrónico"
@@ -46,11 +51,6 @@ const LoginScreen: React.FC = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      {errorMessage ? (
-        <Text style={styles.errorMsg}>
-          {errorMessage}
-        </Text>
-      ) : null}
       <TextInput
         style={styles.input}
         placeholder="Contraseña"

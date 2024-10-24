@@ -5,7 +5,7 @@ import { registerCheck } from "@/apis/register";
 import { useAuthContext } from "@/context/AuthContext";
 import css from "@/styles/css";
 
-const RegisterScreen: React.FC = () => {  
+const RegisterScreen: React.FC = () => {
   const { login } = useAuthContext();
 
   const [email, setEmail] = useState("");
@@ -17,17 +17,24 @@ const RegisterScreen: React.FC = () => {
   const styles = css();
 
   const handleRegister = async () => {
-    const Data = await registerCheck(email, nombre, password);
-    if (Data.success) {
-      login()
-      router.replace("/");
-    } else {
-      setErrorMessage("Error: " + Data.message);
+    try {
+      const Data = await registerCheck(email, nombre, password);
+      if (Data.success) {
+        login();
+        router.replace("/");
+      } else {
+        setErrorMessage("Error: " + Data.message);
+      }
+    } catch {
+      setErrorMessage("Server Error");
     }
   };
   return (
     <View style={[styles.container, styles.flex]}>
       <Text style={styles.header}>Registrarse</Text>
+      {errorMessage ? (
+        <Text style={styles.errorMsg}>{errorMessage}</Text>
+      ) : null}
       <TextInput
         style={styles.input}
         placeholder="Correo Electrónico"
@@ -41,11 +48,6 @@ const RegisterScreen: React.FC = () => {
         value={nombre}
         onChangeText={setNombre}
       />
-      {errorMessage ? (
-        <Text style={styles.errorMsg}>
-          {errorMessage}
-        </Text>
-      ) : null}
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
