@@ -1,10 +1,18 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
+interface Marker {
+  link: string;
+  id: number;
+  nombre: string;
+}
+
 interface MarkersContextType {
-  markers: { link: string; id: number; nombre: string }[];
-  setMarkers: React.Dispatch<React.SetStateAction<{ link: string; id: number; nombre: string }[]>>;
-  refreshMarkers: () => void; 
+  markers: Marker[];
+  setMarkers: React.Dispatch<React.SetStateAction<Marker[]>>;
+  refreshMarkers: () => void;
   trigger: boolean;
+  isVisible: boolean;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MarkersContext = createContext<MarkersContextType | undefined>(undefined);
@@ -18,15 +26,25 @@ export const useMarkersContext = () => {
 };
 
 export const MarkersProvider = ({ children }: { children: ReactNode }) => {
-  const [markers, setMarkers] = useState<{ link: string; id: number; nombre: string }[]>([]);
-  const [trigger, setTrigger] = useState(false); 
-  
+  const [markers, setMarkers] = useState<Marker[]>([]);
+  const [trigger, setTrigger] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
   const refreshMarkers = () => {
-    setTrigger(prev => !prev);
+    setTrigger((prev) => !prev);
   };
-  
+
   return (
-    <MarkersContext.Provider value={{ markers, setMarkers, refreshMarkers, trigger }}>
+    <MarkersContext.Provider
+      value={{
+        markers,
+        setMarkers,
+        refreshMarkers,
+        trigger,
+        isVisible,
+        setIsVisible,
+      }}
+    >
       {children}
     </MarkersContext.Provider>
   );

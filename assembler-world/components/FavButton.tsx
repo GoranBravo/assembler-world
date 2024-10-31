@@ -20,19 +20,30 @@ export const FavButton: React.FC<{
   } else {
     padH = 10;
   }
-  const { refreshMarkers } = useMarkersContext();
-  const styles = css()
+  const { refreshMarkers, setIsVisible } = useMarkersContext();
+  const styles = css();
   const vinMarker = async () => {
     try {
       const token = await getValueFor("token");
-      token ? (await markerLink(markerId, token)) : null;
-      refreshMarkers()
+      token ? await markerLink(markerId, token) : null;
+      refreshMarkers();
     } catch (error) {
       console.error("Error deleating marker:", error);
     }
   };
+  const handlepress = () => {
+    router.replace(press as Href);
+    setIsVisible(false);
+  };
   return (
-    <Pressable onPress={() => router.replace(press as Href)} style={[styles.button, { marginLeft: padH, marginBottom: padV }]}>
+    <Pressable
+      onPress={handlepress}
+      style={[
+        styles.button,
+        styles.favButton,
+        { marginLeft: padH, marginBottom: padV },
+      ]}
+    >
       <Pressable onPress={() => vinMarker()}>
         {pined ? (
           <Image

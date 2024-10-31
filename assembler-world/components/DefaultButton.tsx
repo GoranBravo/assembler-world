@@ -1,13 +1,21 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 import css from "@/styles/css";
+import { useMarkersContext } from "@/context/MarkersContext";
 
 export const DefaultButton: React.FC<{
   text: string;
   press: () => void;
   color?: string;
   vertical?: boolean;
-}> = ({ text, press, color = "#007BFF", vertical = false }) => {
+  closeAfter?: boolean;
+}> = ({
+  text,
+  press,
+  color = "#007BFF",
+  vertical = false,
+  closeAfter = true,
+}) => {
   let padH = 0;
   let padV = 0;
   if (vertical) {
@@ -15,10 +23,17 @@ export const DefaultButton: React.FC<{
   } else {
     padH = 10;
   }
-  const styles = css()
+  const { setIsVisible } = useMarkersContext();
+  const styles = css();
+  const handlepress = () => {
+    press();
+    if (closeAfter) {
+      setIsVisible(false);
+    }
+  };
   return (
     <Pressable
-      onPress={press}
+      onPress={handlepress}
       style={[
         styles.button,
         { backgroundColor: color, marginLeft: padH, marginBottom: padV },

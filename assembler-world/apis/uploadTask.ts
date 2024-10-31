@@ -9,14 +9,13 @@ interface uploadResponse {
 export const uploadTask = async (
   title: string,
   content: string,
-  token: string,
-//   password: string
+  token: string
 ): Promise<uploadResponse> => {
   const res = await fetch(taskUpload, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "auth": token
+      auth: token,
     },
     body: JSON.stringify({ title, content }),
   });

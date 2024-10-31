@@ -2,47 +2,23 @@ import Slider from "@/components/Slider";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
-import { useContext, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultButton } from "@/components/DefaultButton";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
-import { getValueFor } from "@/utils/storage";
-import { addMarker } from "@/apis/addMarker";
-import { useRouteInfo } from "expo-router/build/hooks";
-import { markerLink } from "@/apis/linkMarker";
 import { useMarkersContext } from "@/context/MarkersContext";
 import { useAuthContext } from "@/context/AuthContext";
 import css from "@/styles/css";
 
 const NavBar: React.FC = () => {
-  const { logout, isLoggedIn } = useAuthContext();
-  const { screenSize } = useScreenSize();
-  const [isSliderVisible, setSliderVisible] = useState(false);
+  const { logout, isLoggedIn, toMarker } = useAuthContext();
   const { theme, setTheme } = useContext(UserPreferencesContext);
-  const route = useRouteInfo();
-  const styles = css()
+  const { setIsVisible } = useMarkersContext();
 
-  const { refreshMarkers } = useMarkersContext();
-  const toMarker = async () => {
-    try {
-      const token = await getValueFor("token");
-      if (token) {
-        const data = await addMarker(route.pathname, route.pathname, token);
-        if (data.markerId) {
-          await markerLink(data.markerId, token);
-          refreshMarkers();
-        }
-      }
-    } catch (error) {
-      console.error("Error adding marker:", error);
-    }
-  };
+  const { screenSize } = useScreenSize();
 
-  const handleLogOut = () => {
-    //TODO: LogOut Function
-    logout();
-  };
+  const styles = css();
 
   return (
     <>
@@ -65,9 +41,10 @@ const NavBar: React.FC = () => {
                 <>
                   <DefaultButton
                     text={"Añadir a Favoritos"}
-                    press={() => toMarker()}
+                    press={() => toMarker}
+                    closeAfter={false}
                   />
-                  <DefaultButton text={"Cerrar Sesion"} press={handleLogOut} />
+                  <DefaultButton text={"Cerrar Sesion"} press={logout} />
                 </>
               ) : (
                 <>
@@ -85,7 +62,7 @@ const NavBar: React.FC = () => {
           )}
 
           {screenSize !== "large" && (
-            <Pressable onPress={() => setSliderVisible(true)}>
+            <Pressable onPress={() => setIsVisible(true)}>
               <Image
                 style={styles.sliderImg}
                 source={require("../assets/images/threeLines.png")}
@@ -95,10 +72,7 @@ const NavBar: React.FC = () => {
         </View>
       </SafeAreaView>
 
-      <Slider
-        isVisible={isSliderVisible}
-        onClose={() => setSliderVisible(false)}
-      />
+      <Slider />
     </>
   );
 };

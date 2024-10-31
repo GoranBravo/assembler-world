@@ -5,10 +5,18 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
   const { screenWidth } = useScreenSize();
-  const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } = usePageWidth();
+  const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } =
+    usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
-  
+  let marginLeft = 0;
+  let marginRight = 0;
+  if (flexDir == "row") {
+    marginLeft = 10;
+    marginRight = 10;
+  } else {
+  }
+
   return StyleSheet.create({
     video: {
       width: videoWidth,
@@ -37,10 +45,16 @@ const css = () => {
       borderWidth: 1,
       borderRadius: 10,
     },
+    mLeft: {
+      marginLeft,
+    },
+    mRigth: {
+      marginRight,
+    },
     img: {
       width: pageWidth - 80,
       resizeMode: "contain",
-      height: (pageWidth - 80) * (9/16),
+      height: (pageWidth - 80) * (9 / 16),
       borderRadius: 7,
     },
     floatingBox: {
@@ -132,7 +146,7 @@ const css = () => {
       borderRadius: 5,
       alignItems: "center",
       backgroundColor: "gray",
-    },  
+    },
     favImage: {
       marginRight: 10,
       height: 20,

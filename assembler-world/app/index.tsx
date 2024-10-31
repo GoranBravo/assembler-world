@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -17,6 +17,8 @@ import { useAuthContext } from "@/context/AuthContext";
 import { router } from "expo-router";
 import { uploadTask } from "@/apis/uploadTask";
 import { getValueFor } from "@/utils/storage";
+import { getTask } from "@/apis/getTask";
+import { getAllTaskId } from "@/apis/getAllTaskId";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
@@ -29,13 +31,48 @@ const Index: React.FC = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [creatorName, setCreatorName] = useState("");
+
+  const [titleSend, setTitleSend] = useState("");
+  const [contentSend, setContentSend] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
+  const hasFetchedTask = useRef(false);
+
+  useEffect(() => {
+    const fetchRandomTask = async () => {
+      try {
+        const response = await getAllTaskId();
+        if (response.success && response.taskIds.length > 0) {
+          const taskIds = response.taskIds;
+          const randomIndex = Math.floor(Math.random() * taskIds.length);
+          const randomTaskId = taskIds[randomIndex];
+
+          const taskResponse = await getTask(randomTaskId);
+          if (taskResponse && taskResponse.success) {
+            setTitle(taskResponse.title);
+            setContent(taskResponse.content);
+            setCreatorName(taskResponse.creatorName);
+          }
+        } else {
+          console.log("No hay tareas disponibles.");
+        }
+      } catch (error) {
+        console.error("Error al obtener la tarea aleatoria:", error);
+      }
+    };
+
+    if (!hasFetchedTask.current) {
+      fetchRandomTask();
+      hasFetchedTask.current = true;
+    }
+  }, []);
 
   const handleTask = async () => {
     try {
       const token = await getValueFor("token");
       if (token) {
-        const Data = await uploadTask(title, content, token);
+        const Data = await uploadTask(titleSend, contentSend, token);
         if (Data.success) {
           router.replace("/");
         } else {
@@ -43,7 +80,6 @@ const Index: React.FC = () => {
         }
       } else {
         console.error("No match for token");
-        //TODO: Abrir una nueva pestaña para que el usuario se logge.
       }
     } catch (error) {
       console.error("Error adding marker:", error);
@@ -62,24 +98,23 @@ const Index: React.FC = () => {
           />
         </View>
         <View style={styles.row}>
-          <View style={[styles.textContainer, { marginRight: 10 }]}>
+          <View style={[styles.textContainer, styles.mRigth]}>
             <Text style={styles.h1}>Problema del Día</Text>
-            <Text style={styles.h2}>TP Assembly</Text>
-            <Text style={styles.mainText}>
-              {" "}
-              1- Probar número más grande que pueda asignarse directamente, y
-              que todos los anteriores al mismo puedan asignarse directamente.
-              Deducir el por qué. {"\n"} 2- Guardar el número "1234" en R2.{" "}
-              {"\n"} 3- Guardar dicho número en memoria. {"\n"} 4- Guardar el
-              doble del número anterior en la siguiente posición de memoria.
-              Utilizando offset.
-            </Text>
-            <Image
-              source={require("../assets/images/registers.png")}
-              style={styles.img}
-            ></Image>
+            {creatorName != "" ? (
+              <>
+                <Text style={styles.h2}>{title}</Text>
+                <Text style={styles.mainText}>{content}</Text>
+                <Text style={styles.mainText}>Creador: {creatorName}</Text>
+                <Image
+                  source={require("../assets/images/registers.png")}
+                  style={styles.img}
+                ></Image>
+              </>
+            ) : (
+              <Text style={styles.mainText}>Cargando tarea...</Text>
+            )}
           </View>
-          <View style={[styles.textContainer, { marginLeft: 10 }]}>
+          <View style={[styles.textContainer, styles.mLeft]}>
             <View style={[styles.container, styles.flex]}>
               <Text style={styles.header}>Crear Tarea</Text>
               {errorMessage ? (
@@ -88,14 +123,14 @@ const Index: React.FC = () => {
               <TextInput
                 style={styles.input}
                 placeholder="Titulo"
-                value={title}
-                onChangeText={setTitle}
+                value={titleSend}
+                onChangeText={setTitleSend}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Consignas"
-                value={content}
-                onChangeText={setContent}
+                value={contentSend}
+                onChangeText={setContentSend}
               />
               <View style={styles.row}>
                 <Pressable style={styles.buttonSubmmit} onPress={handleTask}>

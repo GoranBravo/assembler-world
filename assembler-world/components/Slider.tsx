@@ -13,28 +13,20 @@ import { useScreenSize } from "@/hooks/useScreenSize";
 import { FavButton } from "./FavButton";
 import { useMarkers } from "@/hooks/useMarkers";
 import css from "@/styles/css";
-import { addMarker } from "@/apis/addMarker";
-import { useRouteInfo } from "expo-router/build/hooks";
-import { getValueFor } from "@/utils/storage";
-import { markerLink } from "@/apis/linkMarker";
 import { useMarkersContext } from "@/context/MarkersContext";
 import { useAuthContext } from "@/context/AuthContext";
 
-const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
-  isVisible,
-  onClose,
-}) => {
+const Slider: React.FC = ({}) => {
   const { theme, setTheme } = useContext(UserPreferencesContext);
+  const { refreshMarkers, isVisible, setIsVisible } = useMarkersContext();
 
-  const { refreshMarkers } = useMarkersContext();
-  const { logout, isLoggedIn } = useAuthContext();
+  const { logout, isLoggedIn, toMarker } = useAuthContext();
 
   const { screenWidth } = useScreenSize();
   const translateX = useSharedValue(screenWidth * 0.7);
   const { markers } = useMarkers();
 
   const styles = css();
-  const route = useRouteInfo();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -52,24 +44,15 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
     }
   }, [isVisible]);
 
-  const toMarker = async () => {
-    try {
-      const token = await getValueFor("token");
-      if (token) {
-        const data = await addMarker(route.pathname, route.pathname, token);
-        await markerLink(data.markerId, token);
-        refreshMarkers();
-      } else {
-        console.error("No match for token")
-      }
-    } catch (error) {
-      console.error("Error adding marker:", error);
-    }
+  const handleLogOut = async () => {
+    logout();
+    refreshMarkers();
+    setIsVisible(false);
   };
 
-  const handleLogOut = () => {
-    //TODO: LogOut Function
-    logout();
+  const handleLogIn = () => {
+    router.replace("/LoginScreen");
+    setIsVisible(false);
   };
 
   return isVisible ? (
@@ -82,10 +65,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
                 <Text style={styles.title}>Cerrar Sesion</Text>
               </Pressable>
             ) : (
-              <Pressable
-                style={styles.headerSlider}
-                onPress={() => router.replace("/LoginScreen")}
-              >
+              <Pressable style={styles.headerSlider} onPress={handleLogIn}>
                 <Text style={styles.title}>Iniciar Sesion</Text>
               </Pressable>
             )}
@@ -94,7 +74,7 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
           <View style={styles.buttonsContainer}>
             <DefaultButton
               text={"Cerrar"}
-              press={onClose}
+              press={() => setIsVisible(false)}
               color="#28a745"
               vertical={true}
             />
@@ -103,22 +83,24 @@ const Slider: React.FC<{ isVisible: boolean; onClose: () => void }> = ({
               press={() => setTheme(theme === "light" ? "dark" : "light")}
               color="#dc3545"
               vertical={true}
+              closeAfter={false}
             />
             {isLoggedIn ? (
               <>
-              <DefaultButton
-                text={"Registrarse"}
-                press={() => router.replace("/RegisterScreen")}
-                vertical={true}
-              />
-              <DefaultButton
+                <DefaultButton
+                  text={"Registrarse"}
+                  press={() => router.replace("/RegisterScreen")}
+                  vertical={true}
+                />
+                <DefaultButton
                   text={"Añadir a Favoritos"}
-                  press={() => toMarker()}
+                  press={() => toMarker}
                   vertical={true}
                   color="#D29E16"
+                  closeAfter={false}
                 />
               </>
-            ) : (null)}
+            ) : null}
             <ScrollView>
               {Array.isArray(markers) && markers.length > 0
                 ? markers.map((marker) => (
