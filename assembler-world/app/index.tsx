@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   Pressable,
+  Linking,
 } from "react-native";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { usePageWidth } from "@/hooks/usePageWidth";
@@ -14,11 +15,12 @@ import { useMarkers } from "@/hooks/useMarkers";
 import { FavButton } from "@/components/FavButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useAuthContext } from "@/context/AuthContext";
-import { router } from "expo-router";
+import { Href, Link, router } from "expo-router";
 import { uploadTask } from "@/apis/uploadTask";
 import { getValueFor } from "@/utils/storage";
 import { getTask } from "@/apis/getTask";
 import { getAllTaskId } from "@/apis/getAllTaskId";
+import { DefaultButton } from "@/components/DefaultButton";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
@@ -29,15 +31,19 @@ const Index: React.FC = () => {
 
   const styles = css();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [creatorName, setCreatorName] = useState("");
+  const [tasks, setTasks] = useState<number[]>([]);
+  const [randomTaskId, setRandomTaskId] = useState<number>(0);
 
-  const [titleSend, setTitleSend] = useState("");
-  const [contentSend, setContentSend] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [titleSend, setTitleSend] = useState<string>("");
+  const [contentSend, setContentSend] = useState<string>("");
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const hasFetchedTask = useRef(false);
+
+  const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
     const fetchRandomTask = async () => {
@@ -45,14 +51,16 @@ const Index: React.FC = () => {
         const response = await getAllTaskId();
         if (response.success && response.taskIds.length > 0) {
           const taskIds = response.taskIds;
+          setTasks(taskIds);
           const randomIndex = Math.floor(Math.random() * taskIds.length);
-          const randomTaskId = taskIds[randomIndex];
+          const selectedId = taskIds[randomIndex];
+          setRandomTaskId(selectedId);
 
-          const taskResponse = await getTask(randomTaskId);
+          const taskResponse = await getTask(selectedId);
           if (taskResponse && taskResponse.success) {
             setTitle(taskResponse.title);
             setContent(taskResponse.content);
-            setCreatorName(taskResponse.creatorName);
+            setUrl("http://localhost:8081/task/" + selectedId);
           }
         } else {
           console.log("No hay tareas disponibles.");
@@ -76,7 +84,8 @@ const Index: React.FC = () => {
         if (Data.success) {
           setTitle("");
           setContent("");
-          router.replace("/")
+          setUrl("");
+          router.replace("/");
         } else {
           setErrorMessage("Error: " + Data.message);
         }
@@ -90,7 +99,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollBackground}>
+    <ScrollView contentContainerStyle={[styles.scrollBackground, styles.flex]}>
       <View style={styles.container}>
         <View style={styles.video}>
           <YoutubeIframe
@@ -102,26 +111,63 @@ const Index: React.FC = () => {
         <View style={styles.row}>
           <View style={[styles.textContainer, styles.mRigth]}>
             <Text style={styles.h1}>Problema del Día</Text>
-            {creatorName != "" ? (
+            {title ? (
               <>
                 <Text style={styles.h2}>{title}</Text>
                 <Text style={styles.mainText}>{content}</Text>
-                <Text style={styles.mainText}>Creador: {creatorName}</Text>
                 <Image
                   source={require("../assets/images/registers.png")}
                   style={styles.img}
-                ></Image>
+                />
+                {url && (
+                  <DefaultButton
+                    text="Detalles"
+                    press={() => Linking.openURL(url)}
+                    vertical={true}
+                  />
+                )}
               </>
             ) : (
               <Text style={styles.mainText}>Cargando tarea...</Text>
             )}
           </View>
           <View style={[styles.textContainer, styles.mLeft]}>
+            <ScrollView>
+              {tasks.map((id) => (
+                <Link key={id} href={`/task/${id}` as Href}>
+                  <DefaultButton
+                    press={() => ""}
+                    text={"Tarea " + id}
+                    vertical={true}
+                  />
+                </Link>
+              ))}
+              {/* {tasks.map((id) => (
+                <DefaultButton
+                  key={id}
+                  text={"Tarea " + id}
+                  press={async () => {
+                    const taskResponse = await getTask(id.toString());
+                    if (taskResponse && taskResponse.success) {
+                      setTitle(taskResponse.title);
+                      setContent(taskResponse.content);
+                      setUrl("http://localhost:8081/task/" + id);
+                      setRandomTaskId(id);
+                    }
+                  }}
+                  vertical={true}
+                />
+              ))} */}
+            </ScrollView>
+          </View>
+        </View>
+        {isLoggedIn && (
+          <View style={[styles.textContainer]}>
             <View style={[styles.container, styles.flex]}>
               <Text style={styles.header}>Crear Tarea</Text>
-              {errorMessage ? (
+              {errorMessage && (
                 <Text style={styles.errorMsg}>{errorMessage}</Text>
-              ) : null}
+              )}
               <TextInput
                 style={styles.input}
                 placeholder="Titulo"
@@ -129,12 +175,16 @@ const Index: React.FC = () => {
                 onChangeText={setTitleSend}
               />
               <TextInput
-                style={styles.input}
+                editable
+                multiline
+                numberOfLines={100}
+                maxLength={40}
+                style={[styles.input, { height: 300 }]}
                 placeholder="Consignas"
                 value={contentSend}
                 onChangeText={setContentSend}
               />
-              <View style={styles.row}>
+              <View style={{ flexDirection: "row" }}>
                 <Pressable style={styles.buttonSubmmit} onPress={handleTask}>
                   <Text style={styles.buttonText}>Publicar</Text>
                 </Pressable>
@@ -147,9 +197,9 @@ const Index: React.FC = () => {
               </View>
             </View>
           </View>
-        </View>
+        )}
       </View>
-      {screenSize == "large" && isLoggedIn && (
+      {screenSize === "large" && isLoggedIn && (
         <ScrollView style={styles.floatingBox}>
           {Array.isArray(markers) && markers.length > 0
             ? markers.map((marker) => (

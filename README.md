@@ -8,5 +8,7 @@ Antecedentes de Software:
     JavaScript
     React Native
     Node.js
+    Nuestro backend se encuentra subido a Vercel, https://back-assembler-world.vercel.app/
+    Nuestra base de datos esta subida en railway, https://railway.app/
     "https://developer.arm.com/documentation": Es una página web donde se puede aprender sobre las funcionalidades de los comandos y operaciones del lenguaje Assembly de ARM.
     "https://developer.arm.com": Es la documentación oficial de ARM.

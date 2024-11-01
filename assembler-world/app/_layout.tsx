@@ -5,10 +5,10 @@ export default function RootLayout() {
   return (
     <Layout>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false, title: "Bienvenido a AssemblerWorld" }} />
         <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
         <Stack.Screen name="RegisterScreen" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="SaveForm" options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Task" options={{ headerShown: false }} />
       </Stack>
     </Layout>
   );

@@ -4,17 +4,18 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
-  const { screenWidth } = useScreenSize();
+  const { screenWidth, screenSize } = useScreenSize();
   const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } =
     usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
   let marginLeft = 0;
   let marginRight = 0;
+  let widthMLeft = pageWidth - 40
   if (flexDir == "row") {
     marginLeft = 10;
     marginRight = 10;
-  } else {
+    widthMLeft = (pageWidth - 40) / 2
   }
 
   return StyleSheet.create({
@@ -44,9 +45,14 @@ const css = () => {
       borderColor: color,
       borderWidth: 1,
       borderRadius: 10,
+      shadowColor: "#000",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
     },
     mLeft: {
       marginLeft,
+      width: widthMLeft,
     },
     mRigth: {
       marginRight,
@@ -66,7 +72,7 @@ const css = () => {
       marginRight: 20,
       marginTop: 20,
       marginLeft: 15,
-      backgroundColor: "#313131",
+      backgroundColor: "#164AAD",
       borderRadius: 10,
       paddingHorizontal: 10,
       paddingTop: 10,

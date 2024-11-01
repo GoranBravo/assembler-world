@@ -75,34 +75,36 @@ const Slider: React.FC = ({}) => {
             <DefaultButton
               text={"Cerrar"}
               press={() => setIsVisible(false)}
-              color="#28a745"
               vertical={true}
             />
             <DefaultButton
               text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
               press={() => setTheme(theme === "light" ? "dark" : "light")}
-              color="#dc3545"
+              color={theme === "light" ? "#000" : "#fff"}
+              colortext={theme === "light" ? "#fff" : "#000"}
               vertical={true}
               closeAfter={false}
-            />
-            <DefaultButton
-              text={"Registrarse"}
-              press={() => router.replace("/RegisterScreen")}
-              vertical={true}
             />
             {isLoggedIn ? (
               <>
                 <DefaultButton
                   text={"Añadir a Favoritos"}
-                  press={() => toMarker}
+                  press={toMarker}
                   vertical={true}
                   color="#D29E16"
                   closeAfter={false}
                 />
               </>
-            ) : null}
+            ) : (
+              <DefaultButton
+                text={"Registrarse"}
+                press={() => router.replace("/RegisterScreen")}
+                vertical={true}
+                color="#28a745"
+              />
+            )}
             <ScrollView>
-              {Array.isArray(markers) && markers.length > 0
+              {Array.isArray(markers) && markers.length > 0 && isLoggedIn
                 ? markers.map((marker) => (
                     <FavButton
                       key={marker.id}

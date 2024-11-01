@@ -35,16 +35,23 @@ const NavBar: React.FC = () => {
               <DefaultButton
                 text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
                 press={() => setTheme(theme === "light" ? "dark" : "light")}
-                color="#dc3545"
+                color={theme === "light" ? "#000" : "#fff"}
+                colortext={theme === "light" ? "#fff" : "#000"}
               />
               {isLoggedIn ? (
                 <>
                   <DefaultButton
                     text={"Añadir a Favoritos"}
-                    press={() => toMarker}
+                    color="#D29E16"
+                    press={toMarker}
                     closeAfter={false}
                   />
-                  <DefaultButton text={"Cerrar Sesion"} press={logout} />
+                  <DefaultButton
+                    text={"Cerrar Sesion"}
+                    press={logout}
+                    color="#E47A17"
+                    colortext="#000"
+                  />
                 </>
               ) : (
                 <>
@@ -55,6 +62,7 @@ const NavBar: React.FC = () => {
                   <DefaultButton
                     text={"Iniciar Sesion"}
                     press={() => router.replace("/LoginScreen")}
+                    color="#28a745"
                   />
                 </>
               )}

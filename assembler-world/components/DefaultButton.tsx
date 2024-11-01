@@ -9,12 +9,14 @@ export const DefaultButton: React.FC<{
   color?: string;
   vertical?: boolean;
   closeAfter?: boolean;
+  colortext?: string;
 }> = ({
   text,
   press,
   color = "#007BFF",
   vertical = false,
   closeAfter = true,
+  colortext = "white",
 }) => {
   let padH = 0;
   let padV = 0;
@@ -39,7 +41,11 @@ export const DefaultButton: React.FC<{
         { backgroundColor: color, marginLeft: padH, marginBottom: padV },
       ]}
     >
-      <Text style={styles.buttonText}>{text}</Text>
+      <Text
+        style={[styles.buttonText, { color: colortext, fontWeight: "500" }]}
+      >
+        {text}
+      </Text>
     </Pressable>
   );
 };

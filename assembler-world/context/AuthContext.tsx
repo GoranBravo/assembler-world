@@ -25,6 +25,8 @@ export const useAuthContext = () => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const { refreshMarkers } = useMarkersContext();
+  const route = useRouteInfo();
 
   const login = async () => {
     setIsLoggedIn(true);
@@ -34,8 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const deslog = await deleteValue("token");
       if (deslog) {
-        router.replace("/");
         setIsLoggedIn(false);
+        refreshMarkers();
+        router.replace("/");
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -43,12 +46,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const toMarker = async () => {
-    const route = useRouteInfo();
     try {
       const token = await getValueFor("token");
       if (token) {
         const data = await addMarker(route.pathname, route.pathname, token);
         await markerLink(data.markerId, token);
+        refreshMarkers();
       } else {
         console.error("No match for token");
       }
