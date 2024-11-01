@@ -74,7 +74,9 @@ const Index: React.FC = () => {
       if (token) {
         const Data = await uploadTask(titleSend, contentSend, token);
         if (Data.success) {
-          router.replace("/");
+          setTitle("");
+          setContent("");
+          router.replace("/")
         } else {
           setErrorMessage("Error: " + Data.message);
         }

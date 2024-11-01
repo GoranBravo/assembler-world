@@ -4,6 +4,8 @@ import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";
 import { useAuthContext } from "@/context/AuthContext";
 import css from "@/styles/css";
+import { save } from "@/utils/storage";
+import { loginCheck } from "@/apis/login";
 
 const RegisterScreen: React.FC = () => {
   const { login } = useAuthContext();
@@ -20,8 +22,22 @@ const RegisterScreen: React.FC = () => {
     try {
       const Data = await registerCheck(email, nombre, password);
       if (Data.success) {
-        login();
-        router.replace("/");
+        const DataLogin = await loginCheck(email, password);
+        if (DataLogin.success) {
+          if (DataLogin.token) {
+            const result = await save("token", DataLogin.token);
+            if (result) {
+              login();
+              router.replace("/");
+            } else {
+              setErrorMessage("Token Save Error.");
+            }
+          } else {
+            setErrorMessage("Token Unaviable");
+          }
+        } else {
+          setErrorMessage("Error: " + DataLogin.message);
+        }
       } else {
         setErrorMessage("Error: " + Data.message);
       }

@@ -46,8 +46,8 @@ const Slider: React.FC = ({}) => {
 
   const handleLogOut = async () => {
     logout();
-    refreshMarkers();
     setIsVisible(false);
+    refreshMarkers();
   };
 
   const handleLogIn = () => {
@@ -85,13 +85,13 @@ const Slider: React.FC = ({}) => {
               vertical={true}
               closeAfter={false}
             />
+            <DefaultButton
+              text={"Registrarse"}
+              press={() => router.replace("/RegisterScreen")}
+              vertical={true}
+            />
             {isLoggedIn ? (
               <>
-                <DefaultButton
-                  text={"Registrarse"}
-                  press={() => router.replace("/RegisterScreen")}
-                  vertical={true}
-                />
                 <DefaultButton
                   text={"Añadir a Favoritos"}
                   press={() => toMarker}
