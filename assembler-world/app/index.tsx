@@ -6,7 +6,6 @@ import {
   Image,
   TextInput,
   Pressable,
-  Linking,
 } from "react-native";
 import YoutubeIframe from "react-native-youtube-iframe";
 import { usePageWidth } from "@/hooks/usePageWidth";
@@ -15,7 +14,7 @@ import { useMarkers } from "@/hooks/useMarkers";
 import { FavButton } from "@/components/FavButton";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useAuthContext } from "@/context/AuthContext";
-import { Href, Link, router } from "expo-router";
+import { Href, router } from "expo-router";
 import { uploadTask } from "@/apis/uploadTask";
 import { getValueFor } from "@/utils/storage";
 import { getTask } from "@/apis/getTask";
@@ -43,8 +42,6 @@ const Index: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const hasFetchedTask = useRef(false);
 
-  const [url, setUrl] = useState<string>("");
-
   useEffect(() => {
     const fetchRandomTask = async () => {
       try {
@@ -60,7 +57,6 @@ const Index: React.FC = () => {
           if (taskResponse && taskResponse.success) {
             setTitle(taskResponse.title);
             setContent(taskResponse.content);
-            setUrl("http://localhost:8081/task/" + selectedId);
           }
         } else {
           console.log("No hay tareas disponibles.");
@@ -84,7 +80,6 @@ const Index: React.FC = () => {
         if (Data.success) {
           setTitle("");
           setContent("");
-          setUrl("");
           router.replace("/");
         } else {
           setErrorMessage("Error: " + Data.message);
@@ -99,7 +94,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.scrollBackground, styles.flex]}>
+    <ScrollView contentContainerStyle={[styles.scrollBackground]}>
       <View style={styles.container}>
         <View style={styles.video}>
           <YoutubeIframe
@@ -119,13 +114,12 @@ const Index: React.FC = () => {
                   source={require("../assets/images/registers.png")}
                   style={styles.img}
                 />
-                {url && (
-                  <DefaultButton
-                    text="Detalles"
-                    press={() => Linking.openURL(url)}
-                    vertical={true}
-                  />
-                )}
+                <DefaultButton
+                  key={randomTaskId}
+                  press={() => router.replace(`/task/${randomTaskId}` as Href)}
+                  text={"Detalles"}
+                  vertical={true}
+                />
               </>
             ) : (
               <Text style={styles.mainText}>Cargando tarea...</Text>
@@ -134,15 +128,6 @@ const Index: React.FC = () => {
           <View style={[styles.textContainer, styles.mLeft]}>
             <ScrollView>
               {tasks.map((id) => (
-                <Link key={id} href={`/task/${id}` as Href}>
-                  <DefaultButton
-                    press={() => ""}
-                    text={"Tarea " + id}
-                    vertical={true}
-                  />
-                </Link>
-              ))}
-              {/* {tasks.map((id) => (
                 <DefaultButton
                   key={id}
                   text={"Tarea " + id}
@@ -151,13 +136,12 @@ const Index: React.FC = () => {
                     if (taskResponse && taskResponse.success) {
                       setTitle(taskResponse.title);
                       setContent(taskResponse.content);
-                      setUrl("http://localhost:8081/task/" + id);
                       setRandomTaskId(id);
                     }
                   }}
                   vertical={true}
                 />
-              ))} */}
+              ))}
             </ScrollView>
           </View>
         </View>

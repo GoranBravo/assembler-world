@@ -1,11 +1,10 @@
-// Task.tsx
 import React, { useEffect, useRef, useState } from "react";
-import { Text, View, ScrollView, Image, Linking } from "react-native"; // Import Linking
+import { Text, View, ScrollView, Image } from "react-native";
 import css from "@/styles/css";
 import { getTask } from "@/apis/getTask";
 import { DefaultButton } from "@/components/DefaultButton";
 import { getAllTaskId } from "@/apis/getAllTaskId";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import { getValueFor } from "@/utils/storage";
 import { taskDelete } from "@/apis/deleteTask";
 
@@ -19,7 +18,6 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [url, setUrl] = useState(""); // State for URL
 
   const hasFetchedTask = useRef(false);
 
@@ -65,7 +63,6 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={[styles.textContainer, styles.mRigth]}>
-            <Text style={styles.h1}>Problema del Día</Text>
             {title ? (
               <>
                 <Text style={styles.h2}>{title}</Text>
@@ -74,12 +71,6 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
                   source={require("../assets/images/registers.png")}
                   style={styles.img}
                 />
-                {url && (
-                  <DefaultButton
-                    text="Ver Más"
-                    press={() => Linking.openURL(url)}
-                  />
-                )}
               </>
             ) : (
               <Text style={styles.mainText}>Cargando tarea...</Text>
@@ -102,7 +93,7 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
                       setTitle(taskResponse.title);
                       setContent(taskResponse.content);
                       router.setParams({ id });
-                    }
+                      router.replace(`/task/${id}` as Href)}
                   }}
                   vertical={true}
                 />
