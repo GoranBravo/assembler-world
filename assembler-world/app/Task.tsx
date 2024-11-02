@@ -62,7 +62,7 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
     <ScrollView contentContainerStyle={[styles.scrollBackground, styles.flex]}>
       <View style={styles.container}>
         <View style={styles.row}>
-          <View style={[styles.textContainer, styles.mRigth]}>
+          <View style={[styles.textContainer, styles.mRigth, {marginTop: 20}]}>
             {title ? (
               <>
                 <Text style={styles.h2}>{title}</Text>
@@ -87,13 +87,18 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
                   key={id}
                   text={"Tarea " + id}
                   press={async () => {
-                    const taskResponse = await getTask(id);
-                    if (taskResponse && taskResponse.success) {
-                      taskId = id;
-                      setTitle(taskResponse.title);
-                      setContent(taskResponse.content);
-                      router.setParams({ id });
-                      router.replace(`/task/${id}` as Href)}
+                    try {
+                      const taskResponse = await getTask(id);
+                      if (taskResponse && taskResponse.success) {
+                        taskId = id;
+                        setTitle(taskResponse.title);
+                        setContent(taskResponse.content);
+                        router.setParams({ id });
+                        router.replace(`/task/${id}` as Href);
+                      }
+                    } catch(error) {
+                      console.error(error)
+                    }
                   }}
                   vertical={true}
                 />

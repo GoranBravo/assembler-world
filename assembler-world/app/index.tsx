@@ -112,7 +112,7 @@ const Index: React.FC = () => {
                 <Text style={styles.mainText}>{content}</Text>
                 <Image
                   source={require("../assets/images/registers.png")}
-                  style={styles.img}
+                  style={[styles.img, {marginBottom: 20}]}
                 />
                 <DefaultButton
                   key={randomTaskId}
@@ -132,11 +132,15 @@ const Index: React.FC = () => {
                   key={id}
                   text={"Tarea " + id}
                   press={async () => {
-                    const taskResponse = await getTask(id.toString());
-                    if (taskResponse && taskResponse.success) {
-                      setTitle(taskResponse.title);
-                      setContent(taskResponse.content);
-                      setRandomTaskId(id);
+                    try {
+                      const taskResponse = await getTask(id.toString());
+                      if (taskResponse && taskResponse.success) {
+                        setTitle(taskResponse.title);
+                        setContent(taskResponse.content);
+                        setRandomTaskId(id);
+                      }
+                    } catch(error) {
+                      console.error(error)
                     }
                   }}
                   vertical={true}
@@ -162,7 +166,7 @@ const Index: React.FC = () => {
                 editable
                 multiline
                 numberOfLines={100}
-                maxLength={40}
+                maxLength={2000}
                 style={[styles.input, { height: 300 }]}
                 placeholder="Consignas"
                 value={contentSend}
