@@ -10,4 +10,7 @@ export const deleteTask = `${urlBase}/user/taskDelete`;
 export const editTask = `${urlBase}/user/taskEdit`;
 export const taskGet = `${urlBase}/user/getTask`;
 export const allTaskId = `${urlBase}/user/getAllTaskId`;
+export const userGet = `${urlBase}/user/getUser`;
+export const userUpdate = `${urlBase}/user/updateUser`;
+export const userDelete = `${urlBase}/user/deleteUser`;
 

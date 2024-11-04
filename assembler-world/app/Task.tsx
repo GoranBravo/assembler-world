@@ -1,13 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  Image,
-  Modal,
-  TextInput,
-  Button,
-} from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Text, View, ScrollView, Image, Modal, TextInput } from "react-native";
 import css from "@/styles/css";
 import { getTask } from "@/apis/getTask";
 import { DefaultButton } from "@/components/DefaultButton";
@@ -17,6 +9,7 @@ import { getValueFor } from "@/utils/storage";
 import { taskDelete } from "@/apis/deleteTask";
 import { useAuthContext } from "@/context/AuthContext";
 import { modifyTask } from "@/apis/modifyTask";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 interface TaskProps {
   taskId: number;
@@ -24,6 +17,8 @@ interface TaskProps {
 
 const Task: React.FC<TaskProps> = ({ taskId }) => {
   const styles = css();
+  
+  const { theme } = useContext(UserPreferencesContext);
 
   const { isLoggedIn } = useAuthContext();
 
@@ -31,8 +26,8 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const [titleSend, setTitleSend] = useState<string>("");
-  const [contentSend, setContentSend] = useState<string>("");
+  const [titleSend, setTitleSend] = useState("");
+  const [contentSend, setContentSend] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -82,9 +77,16 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
     try {
       const token = await getValueFor("token");
       if (token) {
-        await modifyTask(taskId, titleSend, contentSend, token);
-        setModalVisible(false);
-        router.replace(`/task/${taskId}` as Href);
+        const modifyded = await modifyTask(
+          taskId,
+          titleSend,
+          contentSend,
+          token
+        );
+        if (modifyded.success) {
+          setModalVisible(false);
+          router.replace(`/task/${taskId}` as Href);
+        }
       }
     } catch (error) {
       console.error("Error updating task:", error);
@@ -99,152 +101,156 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollBackground}>
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <View
-            style={[
-              styles.textContainer,
-              styles.boxBorder,
-              styles.mRigth,
-              { marginTop: 20 },
-            ]}
-          >
-            {title ? (
-              <>
-                <Text style={styles.h2}>{title}</Text>
-                <Text style={styles.mainText}>{content}</Text>
-                <Image
-                  source={require("../assets/images/registers.png")}
-                  style={styles.img}
-                />
-              </>
-            ) : (
-              <Text style={styles.mainText}>Cargando tarea...</Text>
-            )}
+    <View style={[styles.flex, styles.scrollBackground]}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.row}>
             <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 10,
-                columnGap: 15,
-              }}
+              style={[
+                styles.textContainer,
+                styles.boxBorder,
+                styles.mRigth,
+                { marginTop: 20 },
+              ]}
             >
-              <DefaultButton
-                text="Volver"
-                press={() => router.replace("/")}
-                vertical={true}
-                flexButton={true}
-              />
-              {isLoggedIn && title ? (
+              {title ? (
                 <>
-                  <DefaultButton
-                    text="Eliminar"
-                    press={handleDelete}
-                    color="red"
-                    vertical={true}
-                    flexButton={true}
-                  />
-                  <DefaultButton
-                    text="Editar"
-                    press={() => setModalVisible(true)}
-                    color="#D29E16"
-                    vertical={true}
-                    flexButton={true}
+                  <Text style={styles.h2}>{title}</Text>
+                  <Text style={styles.mainText}>{content}</Text>
+                  <Image
+                    source={require("../assets/images/registers.png")}
+                    style={styles.img}
                   />
                 </>
-              ) : null}
-            </View>
-          </View>
-
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Editar Tarea</Text>
-                {errorMessage ? (
-                  <Text style={styles.errorMsg}>{errorMessage}</Text>
+              ) : (
+                <Text style={styles.mainText}>Cargando tarea...</Text>
+              )}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 10,
+                  columnGap: 15,
+                }}
+              >
+                <DefaultButton
+                  text="Volver"
+                  press={() => router.replace("/")}
+                  vertical={true}
+                  flexButton={true}
+                />
+                {isLoggedIn && title ? (
+                  <>
+                    <DefaultButton
+                      text="Eliminar"
+                      press={handleDelete}
+                      color="red"
+                      vertical={true}
+                      flexButton={true}
+                    />
+                    <DefaultButton
+                      text="Editar"
+                      press={() => setModalVisible(true)}
+                      color="#D29E16"
+                      vertical={true}
+                      flexButton={true}
+                    />
+                  </>
                 ) : null}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Título"
-                  value={titleSend}
-                  onChangeText={setTitleSend}
-                />
-                <TextInput
-                  style={[styles.input, { height: 300 }]}
-                  placeholder="Contenido"
-                  value={contentSend}
-                  onChangeText={setContentSend}
-                  multiline
-                  numberOfLines={100}
-                  maxLength={2000}
-                />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    columnGap: 15,
-                  }}
-                >
-                  <DefaultButton
-                    text="Guardar"
-                    press={handleEdit}
-                    vertical={true}
-                    flexButton={true}
-                    color="#E47A17"
-                    colortext="#2C2C2C"
-                  />
-                  <DefaultButton
-                    text="Cancelar"
-                    press={handleCancelar}
-                    vertical={true}
-                    flexButton={true}
-                  />
-                </View>
               </View>
             </View>
-          </Modal>
 
-          <View
-            style={[
-              styles.textContainer,
-              styles.boxBorder,
-              styles.mLeft,
-              { marginTop: 20 },
-            ]}
-          >
-            <ScrollView>
-              {tasks.map((id) => (
-                <DefaultButton
-                  key={id}
-                  text={"Tarea " + id}
-                  press={async () => {
-                    try {
-                      const taskResponse = await getTask(id);
-                      if (taskResponse && taskResponse.success) {
-                        taskId = id;
-                        setTitle(taskResponse.title);
-                        setContent(taskResponse.content);
-                        router.setParams({ id });
-                        router.replace(`/task/${id}` as Href);
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Editar Tarea</Text>
+                  {errorMessage ? (
+                    <Text style={styles.errorMsg}>{errorMessage}</Text>
+                  ) : null}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Título"
+                  placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
+                    value={titleSend}
+                    onChangeText={setTitleSend}
+                  />
+                  <TextInput
+                    style={[styles.input, { height: 300 }]}
+                    placeholder="Contenido"
+                  placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
+                    value={contentSend}
+                    onChangeText={setContentSend}
+                    multiline
+                    numberOfLines={100}
+                    maxLength={2000}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      columnGap: 15,
+                    }}
+                  >
+                    <DefaultButton
+                      text="Guardar"
+                      press={handleEdit}
+                      vertical={true}
+                      flexButton={true}
+                      color="#E47A17"
+                      colortext="#2C2C2C"
+                    />
+                    <DefaultButton
+                      text="Cancelar"
+                      press={handleCancelar}
+                      vertical={true}
+                      flexButton={true}
+                    />
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
+            <View
+              style={[
+                styles.textContainer,
+                styles.boxBorder,
+                styles.mLeft,
+                { marginTop: 20 },
+              ]}
+            >
+              <ScrollView>
+                {tasks.map((id) => (
+                  <DefaultButton
+                    key={id}
+                    text={"Tarea " + id}
+                    press={async () => {
+                      try {
+                        const taskResponse = await getTask(id);
+                        if (taskResponse && taskResponse.success) {
+                          taskId = id;
+                          setTitle(taskResponse.title);
+                          setContent(taskResponse.content);
+                          router.setParams({ id });
+                          router.replace(`/task/${id}` as Href);
+                        }
+                      } catch (error) {
+                        console.error(error);
                       }
-                    } catch (error) {
-                      console.error(error);
-                    }
-                  }}
-                  vertical={true}
-                />
-              ))}
-            </ScrollView>
+                    }}
+                    vertical={true}
+                  />
+                ))}
+              </ScrollView>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

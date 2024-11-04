@@ -15,7 +15,7 @@ export const registerCheck = async (
   const res = await fetch(signup, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({ email, nombre, password }),
   });

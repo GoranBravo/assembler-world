@@ -14,7 +14,7 @@ export const getTask = async (idTask: string): Promise<getTaskResponse> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      task: idTask,
+      task: idTask
     },
   });
 

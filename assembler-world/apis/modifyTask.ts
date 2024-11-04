@@ -16,7 +16,7 @@ export const modifyTask = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      auth: token,
+      "auth": token
     },
     body: JSON.stringify({ idTask, title, content }),
   });

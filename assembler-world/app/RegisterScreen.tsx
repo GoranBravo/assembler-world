@@ -21,30 +21,38 @@ const RegisterScreen: React.FC = () => {
   const styles = css();
 
   const handleRegister = async () => {
-    try {
-      const Data = await registerCheck(email, nombre, password);
-      if (Data.success) {
-        const DataLogin = await loginCheck(email, password);
-        if (DataLogin.success) {
-          if (DataLogin.token) {
-            const result = await save("token", DataLogin.token);
-            if (result) {
-              login();
-              router.replace("/");
+    if (email.trim() === "") {
+      setErrorMessage("El correo electrónico es requerido");
+    } else if (email.trim() === "") {
+      setErrorMessage("El nombre es requerido")
+    } else if (email.trim() === "") {
+      setErrorMessage("Una contraseña es requerida")
+    } else {
+      try {
+        const Data = await registerCheck(email, nombre, password);
+        if (Data.success) {
+          const DataLogin = await loginCheck(email, password);
+          if (DataLogin.success) {
+            if (DataLogin.token) {
+              const result = await save("token", DataLogin.token);
+              if (result) {
+                login();
+                router.replace("/");
+              } else {
+                setErrorMessage("Token Save Error.");
+              }
             } else {
-              setErrorMessage("Token Save Error.");
+              setErrorMessage("Token Unaviable");
             }
           } else {
-            setErrorMessage("Token Unaviable");
+            setErrorMessage("Error: " + DataLogin.message);
           }
         } else {
-          setErrorMessage("Error: " + DataLogin.message);
+          setErrorMessage("Error: " + Data.message);
         }
-      } else {
-        setErrorMessage("Error: " + Data.message);
+      } catch {
+        setErrorMessage("Server Error");
       }
-    } catch {
-      setErrorMessage("Server Error");
     }
   };
   return (
@@ -77,7 +85,9 @@ const RegisterScreen: React.FC = () => {
         secureTextEntry
       />
       <Pressable style={styles.buttonSubmmit} onPress={handleRegister}>
-        <Text style={[styles.buttonText, styles.buttonTextOrange]}>Registrarse</Text>
+        <Text style={[styles.buttonText, styles.buttonTextOrange]}>
+          Registrarse
+        </Text>
       </Pressable>
       <Pressable onPress={() => router.replace("/LoginScreen")}>
         <Text style={styles.link}>¿Ya tienes una cuenta? Inicia Sesion</Text>

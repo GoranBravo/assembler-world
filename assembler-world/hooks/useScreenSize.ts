@@ -6,11 +6,16 @@ export const useScreenSize = () => {
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
   );
+  const [screenHeigth, setScreenHeigth] = useState(
+    Dimensions.get("screen").height
+  );
 
   useEffect(() => {
     const updateScreenSize = () => {
       const { width } = Dimensions.get("window");
+      const { height } = Dimensions.get("screen");
       setScreenWidth(width);
+      setScreenHeigth(height)
 
       if (width > 1300) {
         setScreenSize("large");
@@ -34,5 +39,5 @@ export const useScreenSize = () => {
     };
   }, []);
 
-  return { screenSize, screenWidth };
+  return { screenSize, screenWidth, screenHeigth };
 };

@@ -4,7 +4,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
-  const { screenWidth } = useScreenSize();
+  const { screenWidth, screenHeigth } = useScreenSize();
   const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } =
     usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
@@ -39,6 +39,9 @@ const css = () => {
     },
     flex: {
       flex: 1,
+    },
+    total: {
+      height: screenHeigth,
     },
     row: {
       flexDirection: flexDir,
@@ -124,6 +127,7 @@ const css = () => {
       borderRadius: 5,
       justifyContent: "center",
       alignItems: "center",
+      marginBottom: 10,
     },
     buttonCancel: {
       backgroundColor: ligthBlue,

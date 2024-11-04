@@ -11,7 +11,7 @@ export const getAllTaskId = async (): Promise<getTasksIdResponse> => {
   const res = await fetch(allTaskId, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
   });
 
