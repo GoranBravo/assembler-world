@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.goranbravo.assemblerworld"
     },
     "web": {
       "bundler": "metro",
@@ -30,6 +31,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "26de8498-ede3-4101-950a-e63cc4509260"
+      }
+    },
+    "owner": "goranbravo"
   }
 }
