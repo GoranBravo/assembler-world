@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -20,13 +20,15 @@ import { getValueFor } from "@/utils/storage";
 import { getTask } from "@/apis/getTask";
 import { getAllTaskId } from "@/apis/getAllTaskId";
 import { DefaultButton } from "@/components/DefaultButton";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const Index: React.FC = () => {
   const { videoWidth, videoHeight } = usePageWidth();
   const { markers } = useMarkers();
-
   const { screenSize } = useScreenSize();
+  
   const { isLoggedIn } = useAuthContext();
+  const { theme } = useContext(UserPreferencesContext);
 
   const styles = css();
 
@@ -35,6 +37,7 @@ const Index: React.FC = () => {
 
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [creator, setCreator] = useState<string>("");
 
   const [titleSend, setTitleSend] = useState<string>("");
   const [contentSend, setContentSend] = useState<string>("");
@@ -57,6 +60,7 @@ const Index: React.FC = () => {
           if (taskResponse && taskResponse.success) {
             setTitle(taskResponse.title);
             setContent(taskResponse.content);
+            setCreator(taskResponse.creator);
           }
         } else {
           console.log("No hay tareas disponibles.");
@@ -80,6 +84,7 @@ const Index: React.FC = () => {
         if (Data.success) {
           setTitle("");
           setContent("");
+          setCreator("");
           router.replace("/");
         } else {
           setErrorMessage("Error: " + Data.message);
@@ -96,7 +101,7 @@ const Index: React.FC = () => {
   return (
     <ScrollView contentContainerStyle={[styles.scrollBackground]}>
       <View style={styles.container}>
-        <View style={styles.video}>
+        <View style={[styles.video, styles.boxBorder, { borderRadius: 0 }]}>
           <YoutubeIframe
             height={videoHeight}
             width={videoWidth}
@@ -104,28 +109,31 @@ const Index: React.FC = () => {
           />
         </View>
         <View style={styles.row}>
-          <View style={[styles.textContainer, styles.mRigth]}>
+          <View style={[styles.textContainer, styles.boxBorder, styles.mRigth]}>
             <Text style={styles.h1}>Problema del Día</Text>
             {title ? (
               <>
                 <Text style={styles.h2}>{title}</Text>
                 <Text style={styles.mainText}>{content}</Text>
+                <Text style={styles.mainText}>{"Creador: " + creator}</Text>
                 <Image
                   source={require("../assets/images/registers.png")}
-                  style={[styles.img, {marginBottom: 20}]}
+                  style={[styles.img, { marginBottom: 20 }]}
                 />
                 <DefaultButton
                   key={randomTaskId}
                   press={() => router.replace(`/task/${randomTaskId}` as Href)}
+                  color="#E47A17"
                   text={"Detalles"}
                   vertical={true}
+                  colortext="#2C2C2C"
                 />
               </>
             ) : (
               <Text style={styles.mainText}>Cargando tarea...</Text>
             )}
           </View>
-          <View style={[styles.textContainer, styles.mLeft]}>
+          <View style={[styles.textContainer, styles.boxBorder, styles.mLeft]}>
             <ScrollView>
               {tasks.map((id) => (
                 <DefaultButton
@@ -137,10 +145,11 @@ const Index: React.FC = () => {
                       if (taskResponse && taskResponse.success) {
                         setTitle(taskResponse.title);
                         setContent(taskResponse.content);
+                        setCreator(taskResponse.creator);
                         setRandomTaskId(id);
                       }
-                    } catch(error) {
-                      console.error(error)
+                    } catch (error) {
+                      console.error(error);
                     }
                   }}
                   vertical={true}
@@ -150,7 +159,7 @@ const Index: React.FC = () => {
           </View>
         </View>
         {isLoggedIn && (
-          <View style={[styles.textContainer]}>
+          <View style={[styles.textContainer, styles.boxBorder]}>
             <View style={[styles.container, styles.flex]}>
               <Text style={styles.header}>Crear Tarea</Text>
               {errorMessage && (
@@ -159,6 +168,7 @@ const Index: React.FC = () => {
               <TextInput
                 style={styles.input}
                 placeholder="Titulo"
+                placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
                 value={titleSend}
                 onChangeText={setTitleSend}
               />
@@ -169,12 +179,13 @@ const Index: React.FC = () => {
                 maxLength={2000}
                 style={[styles.input, { height: 300 }]}
                 placeholder="Consignas"
+                placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
                 value={contentSend}
                 onChangeText={setContentSend}
               />
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", flex: 1 }}>
                 <Pressable style={styles.buttonSubmmit} onPress={handleTask}>
-                  <Text style={styles.buttonText}>Publicar</Text>
+                  <Text style={styles.buttonTextOrange}>Publicar</Text>
                 </Pressable>
                 <Pressable
                   style={[styles.buttonSubmmit, styles.buttonCancel]}
@@ -188,19 +199,26 @@ const Index: React.FC = () => {
         )}
       </View>
       {screenSize === "large" && isLoggedIn && (
-        <ScrollView style={styles.floatingBox}>
-          {Array.isArray(markers) && markers.length > 0
-            ? markers.map((marker) => (
-                <FavButton
-                  key={marker.id}
-                  markerId={marker.id}
-                  text={marker.nombre}
-                  press={marker.link}
-                  pined={true}
-                  vertical={true}
-                />
-              ))
-            : null}
+        <ScrollView style={[styles.floatingBox, styles.boxBorder]}>
+          {Array.isArray(markers) && markers.length > 0 ? (
+            markers.map((marker) => (
+              <FavButton
+                key={marker.id}
+                markerId={marker.id}
+                text={marker.nombre}
+                press={marker.link}
+                pined={true}
+                vertical={true}
+              />
+            ))
+          ) : (
+            <DefaultButton
+              text="No hay marcadores"
+              color=""
+              press={() => ""}
+              vertical={true}
+            />
+          )}
         </ScrollView>
       )}
     </ScrollView>

@@ -5,7 +5,7 @@ interface getTaskResponse {
   success: boolean;
   title: string;
   content: string;
-  creatorName: string;
+  creator: string;
   error?: string;
 }
 

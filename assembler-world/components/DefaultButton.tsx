@@ -10,13 +10,15 @@ export const DefaultButton: React.FC<{
   vertical?: boolean;
   closeAfter?: boolean;
   colortext?: string;
+  flexButton?: boolean;
 }> = ({
   text,
   press,
-  color = "#007BFF",
+  color = "#164AAD",
   vertical = false,
   closeAfter = true,
   colortext = "white",
+  flexButton = false,
 }) => {
   let padH = 0;
   let padV = 0;
@@ -26,6 +28,7 @@ export const DefaultButton: React.FC<{
     padH = 10;
   }
   const { setIsVisible } = useMarkersContext();
+  let flex;
   const styles = css();
   const handlepress = () => {
     press();
@@ -33,12 +36,15 @@ export const DefaultButton: React.FC<{
       setIsVisible(false);
     }
   };
+  if (flexButton) {
+    flex = 1;
+  }
   return (
     <Pressable
       onPress={handlepress}
       style={[
         styles.button,
-        { backgroundColor: color, marginLeft: padH, marginBottom: padV },
+        { backgroundColor: color, marginLeft: padH, marginBottom: padV, flex },
       ]}
     >
       <Text

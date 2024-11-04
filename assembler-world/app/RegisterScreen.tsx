@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
 import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";
@@ -6,9 +6,11 @@ import { useAuthContext } from "@/context/AuthContext";
 import css from "@/styles/css";
 import { save } from "@/utils/storage";
 import { loginCheck } from "@/apis/login";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const RegisterScreen: React.FC = () => {
   const { login } = useAuthContext();
+  const { theme } = useContext(UserPreferencesContext);
 
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
@@ -54,6 +56,7 @@ const RegisterScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Correo Electrónico"
+        placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -61,18 +64,20 @@ const RegisterScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Nombre"
+        placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
         value={nombre}
         onChangeText={setNombre}
       />
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
+        placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <Pressable style={styles.buttonSubmmit} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrarse</Text>
+        <Text style={[styles.buttonText, styles.buttonTextOrange]}>Registrarse</Text>
       </Pressable>
       <Pressable onPress={() => router.replace("/LoginScreen")}>
         <Text style={styles.link}>¿Ya tienes una cuenta? Inicia Sesion</Text>

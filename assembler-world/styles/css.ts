@@ -4,19 +4,24 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useScreenSize } from "@/hooks/useScreenSize";
 
 const css = () => {
-  const { screenWidth, screenSize } = useScreenSize();
+  const { screenWidth } = useScreenSize();
   const { videoWidth, videoHeight, pageWidth, widthSlider, flexDir } =
     usePageWidth();
   const backgroundColor = useThemeColor({}, "background");
   const color = useThemeColor({}, "text");
   let marginLeft = 0;
   let marginRight = 0;
-  let widthMLeft = pageWidth - 40
+  let widthMLeft = pageWidth - 40;
   if (flexDir == "row") {
     marginLeft = 10;
     marginRight = 10;
-    widthMLeft = (pageWidth - 40) / 2
+    widthMLeft = (pageWidth - 40) / 2;
   }
+  const ligthBlue = "#007BFF";
+  const darkerBlue = "#164AAD";
+  const darkestBlue = "#102C63";
+  const orangeJoseju = "#E47A17";
+  const darkText = "#2C2C2C";
 
   return StyleSheet.create({
     video: {
@@ -42,12 +47,14 @@ const css = () => {
       width: pageWidth - 40,
       marginBottom: 20,
       padding: 20,
-      borderColor: color,
-      borderWidth: 1,
       borderRadius: 10,
-      shadowColor: "#000",
-      shadowOffset: { width: 2, height: 2 },
-      shadowOpacity: 0.25,
+      paddingBottom: 10,
+    },
+    boxBorder: {
+      borderRadius: 5,
+      shadowColor: color,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.5,
       shadowRadius: 3.84,
     },
     mLeft: {
@@ -72,14 +79,10 @@ const css = () => {
       marginRight: 20,
       marginTop: 20,
       marginLeft: 15,
-      backgroundColor: "#164AAD",
+      backgroundColor: darkerBlue,
       borderRadius: 10,
       paddingHorizontal: 10,
       paddingTop: 10,
-      shadowColor: "#000",
-      shadowOffset: { width: 2, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
     },
     h1: {
       textAlign: "center",
@@ -105,25 +108,25 @@ const css = () => {
     input: {
       width: pageWidth - 80,
       height: 50,
-      color: "gray",
-      borderColor: color,
+      color,
+      borderColor: orangeJoseju,
       borderWidth: 1,
       borderRadius: 5,
       marginBottom: 15,
       paddingHorizontal: 10,
-      backgroundColor: "#fff",
+      backgroundColor,
     },
     buttonSubmmit: {
-      maxWidth: pageWidth - 80,
+      width: pageWidth / 2 - 47.5,
       paddingHorizontal: 10,
       height: 50,
-      backgroundColor: "#007BFF",
+      backgroundColor: orangeJoseju,
       borderRadius: 5,
       justifyContent: "center",
       alignItems: "center",
     },
     buttonCancel: {
-      backgroundColor: "gray",
+      backgroundColor: ligthBlue,
       marginLeft: 15,
     },
     header: {
@@ -134,7 +137,7 @@ const css = () => {
     },
     link: {
       marginTop: 10,
-      color: "#007BFF",
+      color: ligthBlue,
       fontSize: 16,
     },
     button: {
@@ -145,6 +148,11 @@ const css = () => {
     buttonText: {
       color: "white",
       fontSize: 16,
+    },
+    buttonTextOrange: {
+      color: darkText,
+      fontSize: 16,
+      fontWeight: "bold",
     },
     favButton: {
       padding: 10,
@@ -170,7 +178,7 @@ const css = () => {
       top: 0,
       bottom: 0,
       width: widthSlider,
-      backgroundColor: "#164AAD",
+      backgroundColor: darkestBlue,
       shadowColor: "#000",
       shadowOpacity: 0.5,
       shadowOffset: { width: 0, height: 2 },
@@ -179,7 +187,7 @@ const css = () => {
     },
     buttonsContainer: {
       paddingHorizontal: 20,
-      backgroundColor: "#164AAD",
+      backgroundColor: darkestBlue,
       paddingTop: 20,
     },
     title: {
@@ -188,7 +196,7 @@ const css = () => {
       textAlign: "center",
     },
     headerSlider: {
-      backgroundColor: "#E47A17",
+      backgroundColor: orangeJoseju,
       height: 65,
       justifyContent: "center",
     },
@@ -199,7 +207,7 @@ const css = () => {
       marginBottom: 10,
     },
     navbar: {
-      backgroundColor: "#164AAD",
+      backgroundColor: darkerBlue,
       height: 65,
       flexDirection: "row",
       alignItems: "center",
@@ -208,7 +216,7 @@ const css = () => {
     },
     logoText: {
       textAlign: "center",
-      color: "#E47A17",
+      color: orangeJoseju,
       fontSize: 22,
       fontWeight: "bold",
       textShadowColor: "#000",
@@ -222,6 +230,33 @@ const css = () => {
       flexDirection: "row",
       justifyContent: "flex-end",
       alignItems: "center",
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalContent: {
+      width: pageWidth - 40,
+      padding: 20,
+      backgroundColor,
+      borderRadius: 10,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    modalTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      marginBottom: 15,
+      color,
     },
   });
 };

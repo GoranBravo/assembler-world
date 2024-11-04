@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
 import { loginCheck } from "@/apis/login";
 import { save } from "@/utils/storage";
 import { router } from "expo-router";
 import css from "@/styles/css";
 import { useAuthContext } from "@/context/AuthContext";
+import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const LoginScreen: React.FC = () => {
   const { login } = useAuthContext();
+  const { theme } = useContext(UserPreferencesContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,6 +49,7 @@ const LoginScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Correo Electrónico"
+        placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -54,12 +57,13 @@ const LoginScreen: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
+        placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <Pressable style={styles.buttonSubmmit} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        <Text style={[styles.buttonText, styles.buttonTextOrange]}>Iniciar Sesión</Text>
       </Pressable>
       <Pressable onPress={() => router.replace("/RegisterScreen")}>
         <Text style={styles.link}>¿No tienes una cuenta? Regístrate</Text>

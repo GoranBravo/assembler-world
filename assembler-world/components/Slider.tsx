@@ -72,19 +72,6 @@ const Slider: React.FC = ({}) => {
           </>
 
           <View style={styles.buttonsContainer}>
-            <DefaultButton
-              text={"Cerrar"}
-              press={() => setIsVisible(false)}
-              vertical={true}
-            />
-            <DefaultButton
-              text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
-              press={() => setTheme(theme === "light" ? "dark" : "light")}
-              color={theme === "light" ? "#000" : "#fff"}
-              colortext={theme === "light" ? "#fff" : "#000"}
-              vertical={true}
-              closeAfter={false}
-            />
             {isLoggedIn ? (
               <>
                 <DefaultButton
@@ -100,9 +87,23 @@ const Slider: React.FC = ({}) => {
                 text={"Registrarse"}
                 press={() => router.replace("/RegisterScreen")}
                 vertical={true}
-                color="#28a745"
+                color="#E47A17"
+                colortext="#2C2C2C"
               />
             )}
+            <DefaultButton
+              text={theme === "light" ? "Modo Oscuro" : "Modo Claro"}
+              press={() => setTheme(theme === "light" ? "dark" : "light")}
+              color={theme === "light" ? "#000" : "#fff"}
+              colortext={theme === "light" ? "#fff" : "#000"}
+              vertical={true}
+              closeAfter={false}
+            />
+            <DefaultButton
+              text={"Cerrar"}
+              press={() => setIsVisible(false)}
+              vertical={true}
+            />
             <ScrollView>
               {Array.isArray(markers) && markers.length > 0 && isLoggedIn
                 ? markers.map((marker) => (
