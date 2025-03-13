@@ -1,6 +1,6 @@
 import { userDelete } from "@/constants/UrlApis";
 
-interface deleteUserResponse {
+interface GeleteUserResponse {
   message: string;
   success: boolean;
   error?: string;
@@ -8,7 +8,7 @@ interface deleteUserResponse {
 
 export const deleteUser = async (
   token: string
-): Promise<deleteUserResponse> => {
+): Promise<GeleteUserResponse> => {
   const res = await fetch(userDelete, {
     method: "POST",
     headers: {
@@ -17,6 +17,6 @@ export const deleteUser = async (
     },
   });
 
-  const data: deleteUserResponse = await res.json();
+  const data: GeleteUserResponse = await res.json();
   return data;
 };

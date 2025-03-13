@@ -1,14 +1,12 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
-import { loginCheck } from "@/apis/login";
-import { save } from "@/utils/storage";
 import { router } from "expo-router";
 import css from "@/styles/css";
 import { useAuthContext } from "@/context/AuthContext";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const LoginScreen: React.FC = () => {
-  const { login } = useAuthContext();
+  const { loginProve } = useAuthContext();
   const { theme } = useContext(UserPreferencesContext);
 
   const [email, setEmail] = useState("");
@@ -20,24 +18,9 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const Data = await loginCheck(email, password);
-      if (Data.success) {
-        if (Data.token) {
-          const result = await save("token", Data.token);
-          if (result) {
-            login();
-            router.replace("/");
-          } else {
-            setErrorMessage("Token Save Error.");
-          }
-        } else {
-          setErrorMessage("Token Unaviable");
-        }
-      } else {
-        setErrorMessage("Error: " + Data.message);
-      }
-    } catch {
-      setErrorMessage("Server Error");
+      await loginProve(email, password);
+    } catch (error) {
+      setErrorMessage("Error: "+ error);
     }
   };
   return (

@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, ReactNode, useMemo } from "react";
 
 interface UserPreferencesContextType {
   theme: "light" | "dark";
@@ -17,8 +17,16 @@ export const UserPreferencesProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
+  const memoValue = useMemo(
+    () => ({
+      theme,
+      setTheme,
+    }),
+    [theme]
+  );
+
   return (
-    <UserPreferencesContext.Provider value={{ theme, setTheme }}>
+    <UserPreferencesContext.Provider value={memoValue}>
       {children}
     </UserPreferencesContext.Provider>
   );

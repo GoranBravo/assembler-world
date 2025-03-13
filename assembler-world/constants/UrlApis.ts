@@ -1,4 +1,4 @@
-const urlBase = "https://back-assembler-world.vercel.app";
+const urlBase = "http://localhost:3000";
 export const login = `${urlBase}/user/login`;
 export const signup = `${urlBase}/user/usersp`;
 export const getMarkers = `${urlBase}/user/getMarkers`;

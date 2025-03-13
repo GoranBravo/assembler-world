@@ -1,6 +1,6 @@
 import { editTask } from "@/constants/UrlApis";
 
-interface editTaskResponse {
+interface EditTaskResponse {
   message: string;
   success: boolean;
   error?: string;
@@ -11,7 +11,7 @@ export const modifyTask = async (
   title: string,
   content: string,
   token: string
-): Promise<editTaskResponse> => {
+): Promise<EditTaskResponse> => {
   const res = await fetch(editTask, {
     method: "POST",
     headers: {
@@ -21,6 +21,6 @@ export const modifyTask = async (
     body: JSON.stringify({ idTask, title, content }),
   });
 
-  const data: editTaskResponse = await res.json();
+  const data: EditTaskResponse = await res.json();
   return data;
 };

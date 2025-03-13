@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useMemo,
+} from "react";
 
 interface Marker {
   link: string;
@@ -34,17 +40,20 @@ export const MarkersProvider = ({ children }: { children: ReactNode }) => {
     setTrigger((prev) => !prev);
   };
 
+  const memoValue = useMemo(
+    () => ({
+      markers,
+      setMarkers,
+      refreshMarkers,
+      trigger,
+      isVisible,
+      setIsVisible,
+    }),
+    [isVisible, refreshMarkers]
+  );
+
   return (
-    <MarkersContext.Provider
-      value={{
-        markers,
-        setMarkers,
-        refreshMarkers,
-        trigger,
-        isVisible,
-        setIsVisible,
-      }}
-    >
+    <MarkersContext.Provider value={memoValue}>
       {children}
     </MarkersContext.Provider>
   );

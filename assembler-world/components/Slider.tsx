@@ -1,13 +1,6 @@
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-  Modal,
-  TextInput,
-} from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -22,59 +15,24 @@ import { useMarkers } from "@/hooks/useMarkers";
 import css from "@/styles/css";
 import { useMarkersContext } from "@/context/MarkersContext";
 import { useAuthContext } from "@/context/AuthContext";
-import { getUser } from "@/apis/getUser";
-import { getValueFor } from "@/utils/storage";
-import { deleteUser } from "@/apis/deleteUser";
-import { uploadUser } from "@/apis/updateUser";
+import EditModal from "./Modal";
 
-const Slider: React.FC = ({}) => {
+const Slider: React.FC = () => {
   const { theme, setTheme } = useContext(UserPreferencesContext);
   const { refreshMarkers, isVisible, setIsVisible } = useMarkersContext();
 
-  const { logout, isLoggedIn, toMarker } = useAuthContext();
+  const { logout, isLoggedIn, toMarker, handleDeleteAcc, getUserData } =
+    useAuthContext();
 
   const { screenWidth } = useScreenSize();
   const translateX = useSharedValue(screenWidth * 0.7);
   const { markers } = useMarkers();
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [userData, setUserData] = useState("");
-  const [mailData, setMailData] = useState("");
-
-  const [userDataSend, setUserDataSend] = useState("");
-  const [mailDataSend, setMailDataSend] = useState("");
-  const [passwordSend, setPasswordSend] = useState("");
-
-  const [password, setPassword] = useState("");
-
   const hasFetchedTask = useRef(false);
   const styles = css();
 
-  const getUserData = async () => {
-    try {
-      const token = await getValueFor("token");
-      if (token) {
-        const data = await getUser(token);
-        if (data.nombre && data.mail) {
-          setUserData(data.nombre);
-          setMailData(data.mail);
-          setUserDataSend(userData);
-          setMailDataSend(mailData);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user:" + error);
-    }
-  };
-
-  useEffect(() => {
-    if (!hasFetchedTask.current && isLoggedIn) {
-      getUserData();
-      hasFetchedTask.current = true;
-    }
-  }, [hasFetchedTask, isLoggedIn]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [mailData, setMailData] = useState("");
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -83,6 +41,12 @@ const Slider: React.FC = ({}) => {
       ],
     };
   });
+
+  getUserData()
+    .then((datos) => {
+      setMailData(datos.email);
+    })
+    .catch((error) => console.error("Error: " + error));
 
   useEffect(() => {
     if (isVisible) {
@@ -102,50 +66,6 @@ const Slider: React.FC = ({}) => {
   const handleLogIn = () => {
     router.replace("/LoginScreen");
     setIsVisible(false);
-  };
-
-  const handleDeleteAcc = async () => {
-    try {
-      const token = await getValueFor("token");
-      if (token) {
-        const deleted = await deleteUser(token);
-        if (deleted.success) {
-          logout();
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  };
-
-  const handleEditAcc = async () => {
-    try {
-      const token = await getValueFor("token");
-      if (token) {
-        const edited = await uploadUser(
-          token,
-          mailDataSend,
-          userDataSend,
-          passwordSend,
-          password
-        );
-        if (edited.success) {
-          setModalVisible(false);
-          router.replace("/");
-        }
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      setErrorMessage("Error updating task:" + error);
-    }
-  };
-
-  const handleCancelar = () => {
-    setUserDataSend(userData);
-    setMailDataSend(mailData);
-    setPasswordSend("");
-    setPassword("");
-    setModalVisible(false);
   };
 
   return isVisible ? (
@@ -215,24 +135,24 @@ const Slider: React.FC = ({}) => {
                   ))
                 : null}
             </ScrollView>
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <>
                 <DefaultButton
-                  text={"Editar Perfil"}
+                  text="Editar Perfil"
                   press={() => setModalVisible(true)}
                   color="#D29E16"
                   closeAfter={false}
-                  vertical={true}
+                  vertical
                 />
                 <DefaultButton
-                  text={"Borrar Cuenta"}
+                  text="Borrar Cuenta"
                   press={handleDeleteAcc}
-                  vertical={true}
+                  vertical
                   color="red"
                   closeAfter={false}
                 />
               </>
-            ) : null}
+            )}
             <DefaultButton
               text={"Cerrar"}
               press={() => setIsVisible(false)}
@@ -242,76 +162,10 @@ const Slider: React.FC = ({}) => {
           </View>
         </SafeAreaView>
       </Animated.View>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <EditModal
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Editar Perfil</Text>
-            {errorMessage ? (
-              <Text style={styles.errorMsg}>{errorMessage}</Text>
-            ) : null}
-            <TextInput
-              style={styles.input}
-              placeholder="Nombre"
-              placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
-              value={userDataSend}
-              onChangeText={setUserDataSend}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
-              value={mailDataSend}
-              onChangeText={setMailDataSend}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
-              value={passwordSend}
-              onChangeText={setPasswordSend}
-              secureTextEntry
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Old Password"
-              placeholderTextColor={theme === "light" ? "#2C2C2C" : "#FFF"}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                columnGap: 15,
-              }}
-            >
-              <DefaultButton
-                text="Guardar"
-                press={handleEditAcc}
-                vertical={true}
-                flexButton={true}
-                color="#E47A17"
-                colortext="#2C2C2C"
-                closeAfter={false}
-              />
-              <DefaultButton
-                text="Cancelar"
-                press={handleCancelar}
-                vertical={true}
-                flexButton={true}
-                closeAfter={false}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   ) : null;
 };

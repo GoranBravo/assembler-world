@@ -4,12 +4,10 @@ import { router } from "expo-router";
 import { registerCheck } from "@/apis/register";
 import { useAuthContext } from "@/context/AuthContext";
 import css from "@/styles/css";
-import { save } from "@/utils/storage";
-import { loginCheck } from "@/apis/login";
 import { UserPreferencesContext } from "@/context/UserPreferencesContext";
 
 const RegisterScreen: React.FC = () => {
-  const { login } = useAuthContext();
+  const { loginProve } = useAuthContext();
   const { theme } = useContext(UserPreferencesContext);
 
   const [email, setEmail] = useState("");
@@ -21,39 +19,24 @@ const RegisterScreen: React.FC = () => {
   const styles = css();
 
   const handleRegister = async () => {
-    if (email.trim() === "") {
-      setErrorMessage("El correo electrónico es requerido");
-    } else if (email.trim() === "") {
-      setErrorMessage("El nombre es requerido")
-    } else if (email.trim() === "") {
-      setErrorMessage("Una contraseña es requerida")
-    } else {
+    if (validateInputs() == null) {
       try {
         const Data = await registerCheck(email, nombre, password);
         if (Data.success) {
-          const DataLogin = await loginCheck(email, password);
-          if (DataLogin.success) {
-            if (DataLogin.token) {
-              const result = await save("token", DataLogin.token);
-              if (result) {
-                login();
-                router.replace("/");
-              } else {
-                setErrorMessage("Token Save Error.");
-              }
-            } else {
-              setErrorMessage("Token Unaviable");
-            }
-          } else {
-            setErrorMessage("Error: " + DataLogin.message);
-          }
+          await loginProve(email, password);
         } else {
           setErrorMessage("Error: " + Data.message);
         }
-      } catch {
-        setErrorMessage("Server Error");
+      } catch (error) {
+        setErrorMessage("Error: " + error);
       }
     }
+  };
+  const validateInputs = () => {
+    if (!email.trim()) return "El correo electrónico es requerido";
+    if (!nombre.trim()) return "El nombre es requerido";
+    if (!password.trim()) return "Una contraseña es requerida";
+    return null;
   };
   return (
     <View style={[styles.container, styles.flex]}>

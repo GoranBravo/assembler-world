@@ -19,6 +19,6 @@ export const loginCheck = async (
     body: JSON.stringify({ email, password }),
   });
 
-  const data: LoginResponse = await res.json();
+  const data: LoginResponse = await res.json();  
   return data;
 };

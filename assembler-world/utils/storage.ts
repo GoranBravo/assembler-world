@@ -13,7 +13,7 @@ export const save = async (key: string, value: string): Promise<boolean> => {
 export const getValueFor = async (key: string): Promise<string | null> => {
   try {
     const result = await AsyncStorage.getItem(key);
-    return result !== null ? result : null;
+    return result ?? null;
   } catch (error) {
     console.log(error);
     return null;

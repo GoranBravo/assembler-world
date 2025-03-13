@@ -57,7 +57,7 @@ const Index: React.FC = () => {
           setRandomTaskId(selectedId);
 
           const taskResponse = await getTask(selectedId);
-          if (taskResponse && taskResponse.success) {
+          if (taskResponse?.success) {
             setTitle(taskResponse.title);
             setContent(taskResponse.content);
             setCreator(taskResponse.creator);
@@ -104,6 +104,7 @@ const Index: React.FC = () => {
         <View style={styles.container}>
           <View style={[styles.video, styles.boxBorder, { borderRadius: 0 }]}>
             <YoutubeIframe
+              key={1}
               height={videoHeight}
               width={videoWidth}
               videoId="9wvzEOq1imo"
@@ -122,6 +123,7 @@ const Index: React.FC = () => {
                   <Image
                     source={require("../assets/images/registers.png")}
                     style={[styles.img, { marginBottom: 20 }]}
+                    resizeMode="contain"
                   />
                   <DefaultButton
                     key={randomTaskId}
@@ -149,7 +151,7 @@ const Index: React.FC = () => {
                     press={async () => {
                       try {
                         const taskResponse = await getTask(id.toString());
-                        if (taskResponse && taskResponse.success) {
+                        if (taskResponse?.success) {
                           setTitle(taskResponse.title);
                           setContent(taskResponse.content);
                           setCreator(taskResponse.creator);
@@ -169,9 +171,9 @@ const Index: React.FC = () => {
             <View style={[styles.textContainer, styles.boxBorder]}>
               <View style={[styles.container, styles.flex]}>
                 <Text style={styles.header}>Crear Tarea</Text>
-                {errorMessage && (
+                {errorMessage ? (
                   <Text style={styles.errorMsg}>{errorMessage}</Text>
-                )}
+                ) : null}
                 <TextInput
                   style={styles.input}
                   placeholder="Titulo"

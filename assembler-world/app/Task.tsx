@@ -42,7 +42,7 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
           const taskIds = response.taskIds;
           setTasks(taskIds);
           const taskResponse = await getTask(taskId.toString());
-          if (taskResponse && taskResponse.success) {
+          if (taskResponse?.success) {
             setTitle(taskResponse.title);
             setContent(taskResponse.content);
             setTitleSend(taskResponse.title);
@@ -231,7 +231,7 @@ const Task: React.FC<TaskProps> = ({ taskId }) => {
                     press={async () => {
                       try {
                         const taskResponse = await getTask(id);
-                        if (taskResponse && taskResponse.success) {
+                        if (taskResponse?.success) {
                           taskId = id;
                           setTitle(taskResponse.title);
                           setContent(taskResponse.content);

@@ -1,6 +1,6 @@
 import { taskGet } from "@/constants/UrlApis";
 
-interface getTaskResponse {
+interface GetTaskResponse {
   message: string;
   success: boolean;
   title: string;
@@ -9,7 +9,7 @@ interface getTaskResponse {
   error?: string;
 }
 
-export const getTask = async (idTask: string): Promise<getTaskResponse> => {
+export const getTask = async (idTask: string): Promise<GetTaskResponse> => {
   const res = await fetch(taskGet, {
     method: "GET",
     headers: {
@@ -18,6 +18,6 @@ export const getTask = async (idTask: string): Promise<getTaskResponse> => {
     },
   });
 
-  const data: getTaskResponse = await res.json();
+  const data: GetTaskResponse = await res.json();
   return data;
 };

@@ -1,6 +1,6 @@
 import { taskUpload } from "@/constants/UrlApis";
 
-interface uploadResponse {
+interface UploadResponse {
   message: string;
   success: boolean;
   error?: string;
@@ -10,7 +10,7 @@ export const uploadTask = async (
   title: string,
   content: string,
   token: string
-): Promise<uploadResponse> => {
+): Promise<UploadResponse> => {
   const res = await fetch(taskUpload, {
     method: "POST",
     headers: {
@@ -20,6 +20,6 @@ export const uploadTask = async (
     body: JSON.stringify({ title, content }),
   });
 
-  const data: uploadResponse = await res.json();
+  const data: UploadResponse = await res.json();
   return data;
 };

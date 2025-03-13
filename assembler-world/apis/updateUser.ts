@@ -1,6 +1,6 @@
 import { userUpdate } from "@/constants/UrlApis";
 
-interface uploadUserResponse {
+interface UploadUserResponse {
   message: string;
   success: boolean;
   error?: string;
@@ -12,7 +12,7 @@ export const uploadUser = async (
   nombre: string,
   password: string,
   oldPassword: string
-): Promise<uploadUserResponse> => {
+): Promise<UploadUserResponse> => {
   const res = await fetch(userUpdate, {
     method: "POST",
     headers: {
@@ -22,6 +22,6 @@ export const uploadUser = async (
     body: JSON.stringify({ mail, nombre, password, oldPassword }),
   });
 
-  const data: uploadUserResponse = await res.json();
+  const data: UploadUserResponse = await res.json();
   return data;
 };

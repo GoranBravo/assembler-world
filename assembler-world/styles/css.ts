@@ -69,7 +69,6 @@ const css = () => {
     },
     img: {
       width: pageWidth - 80,
-      resizeMode: "contain",
       height: (pageWidth - 80) * (9 / 16),
       borderRadius: 7,
     },

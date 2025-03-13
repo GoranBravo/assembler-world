@@ -25,8 +25,10 @@ export const FavButton: React.FC<{
   const vinMarker = async () => {
     try {
       const token = await getValueFor("token");
-      token ? await markerLink(markerId, token) : null;
-      refreshMarkers();
+      if (token) {
+        await markerLink(markerId, token);
+        refreshMarkers();
+      }
     } catch (error) {
       console.error("Error deleating marker:", error);
     }

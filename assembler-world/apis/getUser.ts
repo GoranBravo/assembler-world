@@ -1,6 +1,6 @@
 import { userGet } from "@/constants/UrlApis";
 
-interface getUserResponse {
+interface GetUserResponse {
   message: string;
   success: boolean;
   nombre?: string;
@@ -8,7 +8,7 @@ interface getUserResponse {
   error?: string;
 }
 
-export const getUser = async (token: string): Promise<getUserResponse> => {
+export const getUser = async (token: string): Promise<GetUserResponse> => {
   const res = await fetch(userGet, {
     method: "GET",
     headers: {
@@ -17,6 +17,6 @@ export const getUser = async (token: string): Promise<getUserResponse> => {
     },
   });
 
-  const data: getUserResponse = await res.json();
+  const data: GetUserResponse = await res.json();
   return data;
 };

@@ -1,13 +1,13 @@
 import { saveMarker } from "@/constants/UrlApis";
 
-interface linkMarkerResponse {
+interface LinkMarkerResponse {
   message: string;
   success: boolean;
   markerId: number;
   error?: string;
 }
 
-export const addMarker = async (markerLink: string, nombre: string, token: string): Promise<linkMarkerResponse> => {
+export const addMarker = async (markerLink: string, nombre: string, token: string): Promise<LinkMarkerResponse> => {
   const res = await fetch(saveMarker, {
     method: "POST",
     headers: {
@@ -17,6 +17,6 @@ export const addMarker = async (markerLink: string, nombre: string, token: strin
     body: JSON.stringify({ markerLink, nombre }),
   });
 
-  const data: linkMarkerResponse = await res.json();
+  const data: LinkMarkerResponse = await res.json();
   return data;
 };

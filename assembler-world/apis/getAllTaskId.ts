@@ -1,13 +1,13 @@
 import { allTaskId } from "@/constants/UrlApis";
 
-interface getTasksIdResponse {
+interface GetTasksIdResponse {
   message: string;
   success: boolean;
   taskIds: [];
   error?: string;
 }
 
-export const getAllTaskId = async (): Promise<getTasksIdResponse> => {
+export const getAllTaskId = async (): Promise<GetTasksIdResponse> => {
   const res = await fetch(allTaskId, {
     method: "GET",
     headers: {
@@ -15,6 +15,6 @@ export const getAllTaskId = async (): Promise<getTasksIdResponse> => {
     },
   });
 
-  const data: getTasksIdResponse = await res.json();
+  const data: GetTasksIdResponse = await res.json();
   return data;
 };
